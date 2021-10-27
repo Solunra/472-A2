@@ -1,70 +1,102 @@
 # based on code from https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python
-
 import time
+
 
 class Game:
 	MINIMAX = 0
 	ALPHABETA = 1
 	HUMAN = 2
 	AI = 3
-	
-	def __init__(self, recommend = True):
+
+	# n = game_size, b = blocks, s = win_length
+	def __init__(self, recommend = True, game_size = 3, blocks = 0, win_length = 3):
+		self.game_size = game_size
+		self.game_blocks = blocks
+		self.win_length = win_length
 		self.initialize_game()
 		self.recommend = recommend
-		
+
 	def initialize_game(self):
-		self.current_state = [['.','.','.'],
-							  ['.','.','.'],
-							  ['.','.','.']]
+		game = []
+		for i in range(self.game_size):
+			game.append(['.'] * self.game_size)
+		self.current_state = game
 		# Player X always plays first
 		self.player_turn = 'X'
 
 	def draw_board(self):
 		print()
-		for y in range(0, 3):
-			for x in range(0, 3):
+		for y in range(0, self.game_size):
+			for x in range(0, self.game_size):
 				print(F'{self.current_state[x][y]}', end="")
 			print()
 		print()
 		
 	def is_valid(self, px, py):
-		if px < 0 or px > 2 or py < 0 or py > 2:
+		if px < 0 or px > self.game_size - 1 or py < 0 or py > self.game_size - 1:
 			return False
 		elif self.current_state[px][py] != '.':
 			return False
 		else:
 			return True
 
+	# TODO: Fix Horizontal Wins and Diagonal Wins
 	def is_end(self):
 		# Vertical win
-		for i in range(0, 3):
-			if (self.current_state[0][i] != '.' and
-				self.current_state[0][i] == self.current_state[1][i] and
-				self.current_state[1][i] == self.current_state[2][i]):
-				return self.current_state[0][i]
+		self.verify_vertical()
 		# Horizontal win
-		for i in range(0, 3):
-			if (self.current_state[i] == ['X', 'X', 'X']):
+		for i in range(self.game_size):
+			if self.current_state[i] == ['X'] * self.game_size:
 				return 'X'
-			elif (self.current_state[i] == ['O', 'O', 'O']):
+			elif self.current_state[i] == ['O'] * self.game_size:
 				return 'O'
-		# Main diagonal win
-		if (self.current_state[0][0] != '.' and
-			self.current_state[0][0] == self.current_state[1][1] and
-			self.current_state[0][0] == self.current_state[2][2]):
-			return self.current_state[0][0]
-		# Second diagonal win
-		if (self.current_state[0][2] != '.' and
-			self.current_state[0][2] == self.current_state[1][1] and
-			self.current_state[0][2] == self.current_state[2][0]):
-			return self.current_state[0][2]
+		# Verify diagonal win
+		potential_winner = self.verify_diagonals()
+		if potential_winner != '.':
+			return potential_winner
 		# Is whole board full?
-		for i in range(0, 3):
-			for j in range(0, 3):
+		for i in range(0, self.game_size):
+			for j in range(0, self.game_size):
 				# There's an empty field, we continue the game
 				if (self.current_state[i][j] == '.'):
 					return None
 		# It's a tie!
+		return '.'
+
+	def verify_vertical(self):
+		count = 0
+		for column in range(0, self.game_size):
+			starting_value = self.current_state[column][0]
+			for row in range(1, self.game_size):
+				if starting_value == self.current_state[column][row]:
+					count = count + 1
+					if count == self.win_length:
+						return starting_value
+			count = 0
+
+	# programmatically verify diagonals and count with relation to self.win_length
+	# [[X X X],
+	#  [O O O],
+	#  [X X X]]
+	def verify_diagonals(self):
+		# height is a check. For diagonals of length 3 with n of 5, the diagonal can start on y = 0, 1, or 2
+		is_diagonal_win = False
+		potential_winner = '.'
+		for height in range(self.game_size - self.win_length + 1):
+			# same logic but with rows
+			for row in range(self.game_size - self.win_length + 1):
+				is_diagonal_win = False
+				if self.current_state[height][row] != '.':
+					potential_winner = self.current_state[height][row]
+					is_diagonal_win = True
+					# from left to right
+					for length in range(1, self.win_length):
+						is_diagonal_win = is_diagonal_win and self.current_state[height][row] == self.current_state[height + length][row + length]
+					# from right to left
+					for length in range(1, self.win_length):
+						is_diagonal_win = is_diagonal_win and self.current_state[height][row] == self.current_state[height - length][row - length]
+					if is_diagonal_win:
+						return potential_winner
 		return '.'
 
 	def check_end(self):
@@ -116,8 +148,8 @@ class Game:
 			return (1, x, y)
 		elif result == '.':
 			return (0, x, y)
-		for i in range(0, 3):
-			for j in range(0, 3):
+		for i in range(0, self.game_size):
+			for j in range(0, self.game_size):
 				if self.current_state[i][j] == '.':
 					if max:
 						self.current_state[i][j] = 'O'
@@ -155,8 +187,8 @@ class Game:
 			return (1, x, y)
 		elif result == '.':
 			return (0, x, y)
-		for i in range(0, 3):
-			for j in range(0, 3):
+		for i in range(0, self.game_size):
+			for j in range(0, self.game_size):
 				if self.current_state[i][j] == '.':
 					if max:
 						self.current_state[i][j] = 'O'
@@ -185,7 +217,7 @@ class Game:
 							beta = value
 		return (value, x, y)
 
-	def play(self,algo=None,player_x=None,player_o=None):
+	def play(self, algo=None, player_x=None, player_o=None):
 		if algo == None:
 			algo = self.ALPHABETA
 		if player_x == None:
@@ -219,7 +251,9 @@ class Game:
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
 
+
 def main():
+	# g = Game(recommend=True, game_size=5, blocks=6, win_length=4)
 	g = Game(recommend=True)
-	g.play(algo=Game.ALPHABETA,player_x=Game.AI,player_o=Game.AI)
-	g.play(algo=Game.MINIMAX,player_x=Game.AI,player_o=Game.HUMAN)
+	g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.HUMAN)
+	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
