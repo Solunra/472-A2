@@ -94,7 +94,7 @@ class Game:
 						is_diagonal_win = is_diagonal_win and self.current_state[height][row] == self.current_state[height + length][row + length]
 					# from right to left
 					for length in range(1, self.win_length):
-						is_diagonal_win = is_diagonal_win and self.current_state[height][row] == self.current_state[height - length][row - length]
+						is_diagonal_win = is_diagonal_win and self.current_state[height][row] == self.current_state[height + length][row - length]
 					if is_diagonal_win:
 						return potential_winner
 		return '.'
