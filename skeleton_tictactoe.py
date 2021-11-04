@@ -41,15 +41,16 @@ class Game:
 			return True
 
 	# TODO: Fix Horizontal Wins and Diagonal Wins
-	def is_end(self):
+	def is_end(self) -> str:
+		"""Returns the name of the player that won, . for a tie or None if the game hasn't ended"""
 		# Vertical win
-		self.verify_vertical()
+		potential_winner = self.verify_vertical()
+		if potential_winner != '.':
+			return potential_winner
 		# Horizontal win
-		for i in range(self.game_size):
-			if self.current_state[i] == ['X'] * self.game_size:
-				return 'X'
-			elif self.current_state[i] == ['O'] * self.game_size:
-				return 'O'
+		potential_winner = self.verify_horizontal(self.current_state)
+		if potential_winner != '.':
+			return potential_winner
 		# Verify diagonal win
 		potential_winner = self.verify_diagonals()
 		if potential_winner != '.':
@@ -63,16 +64,33 @@ class Game:
 		# It's a tie!
 		return '.'
 
+	def verify_horizontal(self, gamestate):
+		same_symbol_count = 0
+		current_player = ''
+		for row in gamestate:
+			for index, symbol in enumerate(row):
+				if self.win_length - same_symbol_count > self.game_size - index:
+					break
+
+				if symbol == 'block' or symbol == '.':
+					current_player = ''
+					same_symbol_count = 0
+				elif symbol == current_player:
+					same_symbol_count += 1
+				else:
+					current_player = symbol
+					same_symbol_count = 1
+
+				if same_symbol_count == self.win_length:
+					return current_player
+			same_symbol_count = 0
+
 	def verify_vertical(self):
-		count = 0
-		for column in range(0, self.game_size):
-			starting_value = self.current_state[column][0]
-			for row in range(1, self.game_size):
-				if starting_value == self.current_state[column][row]:
-					count = count + 1
-					if count == self.win_length:
-						return starting_value
-			count = 0
+		# transposing the game state, then using verify horizontal
+		game_state_clone = self.current_state.copy()
+		# transposing the game state 2D list: https://stackoverflow.com/questions/6473679/transpose-list-of-lists
+		list(map(list, zip(*game_state_clone)))
+		self.verify_horizontal(game_state_clone)
 
 	# programmatically verify diagonals and count with relation to self.win_length
 	# [[X X X],
