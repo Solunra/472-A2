@@ -41,14 +41,14 @@ class Game:
 			return True
 
 	# TODO: Fix Horizontal Wins and Diagonal Wins
-	def is_end(self) -> str:
+	def is_end(self):
 		"""Returns the name of the player that won, . for a tie or None if the game hasn't ended"""
 		# Vertical win
 		potential_winner = self.verify_vertical()
 		if potential_winner != '.':
 			return potential_winner
 		# Horizontal win
-		potential_winner = self.verify_horizontal(self.current_state)
+		potential_winner = self.verify_horizontal()
 		if potential_winner != '.':
 			return potential_winner
 		# Verify diagonal win
@@ -59,15 +59,15 @@ class Game:
 		for i in range(0, self.game_size):
 			for j in range(0, self.game_size):
 				# There's an empty field, we continue the game
-				if (self.current_state[i][j] == '.'):
+				if self.current_state[i][j] == '.':
 					return None
 		# It's a tie!
 		return '.'
 
-	def verify_horizontal(self, gamestate):
+	def verify_horizontal(self):
 		same_symbol_count = 0
 		current_player = ''
-		for row in gamestate:
+		for row in self.current_state:
 			for index, symbol in enumerate(row):
 				if self.win_length - same_symbol_count > self.game_size - index:
 					break
@@ -84,13 +84,33 @@ class Game:
 				if same_symbol_count == self.win_length:
 					return current_player
 			same_symbol_count = 0
+		return '.'
 
 	def verify_vertical(self):
 		# transposing the game state, then using verify horizontal
 		game_state_clone = self.current_state.copy()
 		# transposing the game state 2D list: https://stackoverflow.com/questions/6473679/transpose-list-of-lists
 		list(map(list, zip(*game_state_clone)))
-		self.verify_horizontal(game_state_clone)
+		same_symbol_count = 0
+		current_player = ''
+		for row in game_state_clone:
+			for index, symbol in enumerate(row):
+				if self.win_length - same_symbol_count > self.game_size - index:
+					break
+
+				if symbol == 'block' or symbol == '.':
+					current_player = ''
+					same_symbol_count = 0
+				elif symbol == current_player:
+					same_symbol_count += 1
+				else:
+					current_player = symbol
+					same_symbol_count = 1
+
+				if same_symbol_count == self.win_length:
+					return current_player
+			same_symbol_count = 0
+		return '.'
 
 	# programmatically verify diagonals and count with relation to self.win_length
 	# [[X X X],
@@ -273,5 +293,5 @@ class Game:
 def main():
 	# g = Game(recommend=True, game_size=5, blocks=6, win_length=4)
 	g = Game(recommend=True)
-	g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.HUMAN)
+	g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI)
 	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
