@@ -1,5 +1,6 @@
 # based on code from https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python
 import time
+import math
 
 
 class Game:
@@ -40,7 +41,6 @@ class Game:
 		else:
 			return True
 
-	# TODO: Fix Horizontal Wins and Diagonal Wins
 	def is_end(self):
 		"""Returns the name of the player that won, . for a tie or None if the game hasn't ended"""
 		# Vertical win
@@ -65,35 +65,20 @@ class Game:
 		return '.'
 
 	def verify_horizontal(self):
-		same_symbol_count = 0
-		current_player = ''
-		for row in self.current_state:
-			for index, symbol in enumerate(row):
-				if self.win_length - same_symbol_count > self.game_size - index:
-					break
-
-				if symbol == 'block' or symbol == '.':
-					current_player = ''
-					same_symbol_count = 0
-				elif symbol == current_player:
-					same_symbol_count += 1
-				else:
-					current_player = symbol
-					same_symbol_count = 1
-
-				if same_symbol_count == self.win_length:
-					return current_player
-			same_symbol_count = 0
-		return '.'
+		game_state_clone = self.current_state.copy()
+		return self.verify_per_row(game_state_clone)
 
 	def verify_vertical(self):
 		# transposing the game state, then using verify horizontal
 		game_state_clone = self.current_state.copy()
 		# transposing the game state 2D list: https://stackoverflow.com/questions/6473679/transpose-list-of-lists
-		list(map(list, zip(*game_state_clone)))
+		game_state_clone = list(map(list, zip(*game_state_clone)))
+		return self.verify_per_row(game_state_clone)
+
+	def verify_per_row(self, game_state):
 		same_symbol_count = 0
 		current_player = ''
-		for row in game_state_clone:
+		for row in game_state:
 			for index, symbol in enumerate(row):
 				if self.win_length - same_symbol_count > self.game_size - index:
 					break
@@ -118,23 +103,35 @@ class Game:
 	#  [X X X]]
 	def verify_diagonals(self):
 		# height is a check. For diagonals of length 3 with n of 5, the diagonal can start on y = 0, 1, or 2
-		is_diagonal_win = False
+		same_count = 0
 		potential_winner = '.'
+		skip_middle = False
+		skip_number = -1
+		if self.game_size % 2 != 0:
+			skip_middle = True
+			skip_number = self.game_size % 2
 		for height in range(self.game_size - self.win_length + 1):
 			# same logic but with rows
-			for row in range(self.game_size - self.win_length + 1):
-				is_diagonal_win = False
-				if self.current_state[height][row] != '.':
-					potential_winner = self.current_state[height][row]
-					is_diagonal_win = True
-					# from left to right
-					for length in range(1, self.win_length):
-						is_diagonal_win = is_diagonal_win and self.current_state[height][row] == self.current_state[height + length][row + length]
-					# from right to left
-					for length in range(1, self.win_length):
-						is_diagonal_win = is_diagonal_win and self.current_state[height][row] == self.current_state[height + length][row - length]
-					if is_diagonal_win:
-						return potential_winner
+			for row_value in range(self.game_size):
+				if skip_number and row_value == skip_number:
+					continue
+				if self.current_state[height][row_value] != '.' and self.current_state[height][row_value] != 'break':
+					potential_winner = self.current_state[height][row_value]
+					same_count = 1
+					if row_value < math.floor(self.game_size / 2):
+						# from left to right
+						for length in range(1, self.win_length):
+							if potential_winner == self.current_state[height + length][row_value + length]:
+								same_count = same_count + 1
+								if same_count == self.win_length:
+									return potential_winner
+					else:
+						# from right to left
+						for length in range(1, self.win_length):
+							if potential_winner == self.current_state[height + length][row_value - length]:
+								same_count = same_count + 1
+								if same_count == self.win_length:
+									return potential_winner
 		return '.'
 
 	def check_end(self):
@@ -293,5 +290,5 @@ class Game:
 def main():
 	# g = Game(recommend=True, game_size=5, blocks=6, win_length=4)
 	g = Game(recommend=True)
-	g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI)
+	g.play(algo=Game.ALPHABETA, player_x=Game.HUMAN, player_o=Game.HUMAN)
 	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
