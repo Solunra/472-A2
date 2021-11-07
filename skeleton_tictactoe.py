@@ -1,6 +1,7 @@
 # based on code from https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python
 import time
 import math
+import random
 
 
 class Game:
@@ -24,6 +25,16 @@ class Game:
 		self.current_state = game
 		# Player X always plays first
 		self.player_turn = 'X'
+
+		# Generate each blocks
+		list_of_blocks = []
+		while len(list_of_blocks) != self.game_blocks:
+			new_position = (random.randint(0, self.game_size - 1), random.randint(0, self.game_size - 1))
+			if new_position not in list_of_blocks:
+				list_of_blocks.append(new_position)
+		# Place each blocks
+		for x, y in list_of_blocks:
+			self.current_state[x][y] = '-'
 
 	def draw_board(self):
 		print()
@@ -83,7 +94,7 @@ class Game:
 				if self.win_length - same_symbol_count > self.game_size - index:
 					break
 
-				if symbol == 'block' or symbol == '.':
+				if symbol == '-' or symbol == '.':
 					current_player = ''
 					same_symbol_count = 0
 				elif symbol == current_player:
@@ -115,7 +126,7 @@ class Game:
 			for row_value in range(self.game_size):
 				if skip_number and row_value == skip_number:
 					continue
-				if self.current_state[height][row_value] != '.' and self.current_state[height][row_value] != 'break':
+				if self.current_state[height][row_value] != '.' and self.current_state[height][row_value] != '-':
 					potential_winner = self.current_state[height][row_value]
 					same_count = 1
 					if row_value < math.floor(self.game_size / 2):
@@ -288,7 +299,26 @@ class Game:
 
 
 def main():
+	# Uncomment when needed
+	# game_size = 0
+	# while game_size < 3 or game_size > 10:
+	# 	game_size = int(input(f'Please enter the game size: '))
+	# 	if game_size < 3 or game_size > 10:
+	# 		print(f'Game\'s size must be between 3 and 10')
+	#
+	# blocks = -1
+	# while blocks < 0 or blocks > (game_size * 2):
+	# 	blocks = int(input(f'Please enter the block amount: '))
+	# 	if blocks < 0 or blocks > (game_size * 2):
+	# 		print(f'Number of blocks must be between 0 and {game_size * 2}')
+	#
+	# win_length = 0
+	# while win_length < 3 or win_length > game_size:
+	# 	win_length = int(input(f'Please enter the win length: '))
+	# 	if win_length < 3 or win_length > game_size:
+	# 		print(f'Win length must be between 3 and {game_size}')
+
 	# g = Game(recommend=True, game_size=5, blocks=6, win_length=4)
-	g = Game(recommend=True)
-	g.play(algo=Game.ALPHABETA, player_x=Game.HUMAN, player_o=Game.HUMAN)
+	g = Game(recommend=True, blocks=5)
+	g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI)
 	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
