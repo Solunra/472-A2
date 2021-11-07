@@ -317,8 +317,8 @@ def main():
 	# 	win_length = int(input(f'Please enter the win length: '))
 	# 	if win_length < 3 or win_length > game_size:
 	# 		print(f'Win length must be between 3 and {game_size}')
+	# g = Game(recommend=True, game_size=game_size, blocks=blocks, win_length=win_length)
 
-	# g = Game(recommend=True, game_size=5, blocks=6, win_length=4)
 	g = Game(recommend=True, blocks=5)
 	g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI)
 	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
