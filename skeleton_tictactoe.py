@@ -52,6 +52,33 @@ class Game:
 		else:
 			return True
 
+	def h1_num_own_tiles(self):
+		h_score = 0
+		num_tiles = 0
+		win_length = self.win_length
+		# Horizontal win
+		game_state_clone = self.current_state.copy()
+		for row in game_state_clone:
+			# print(f'current row {row}')
+			num_tiles = 0
+			for index, symbol in enumerate(row):
+				if symbol == 'O':
+					num_tiles += 1
+			h_score += win_length - num_tiles
+
+		# Vertical win
+		game_state_vertical_clone = list(map(list, zip(*game_state_clone)))
+		for col in game_state_vertical_clone:
+			num_tiles = 0
+			for index, symbol in enumerate(col):
+				if symbol == 'O':
+					num_tiles += 1
+			h_score += win_length - num_tiles
+		
+		# Diagonal win L-R, Up to Down
+		return h_score
+
+	
 	def is_end(self):
 		"""Returns the name of the player that won, . for a tie or None if the game hasn't ended"""
 		# Vertical win
@@ -188,6 +215,7 @@ class Game:
 		x = None
 		y = None
 		result = self.is_end()
+		print(f'the score is {self.h1_num_own_tiles()}')
 		if result == 'X':
 			return (-1, x, y)
 		elif result == 'O':
@@ -227,6 +255,7 @@ class Game:
 		x = None
 		y = None
 		result = self.is_end()
+		print(f'the score is {self.h1_num_own_tiles()}')
 		if result == 'X':
 			return (-1, x, y)
 		elif result == 'O':
@@ -320,5 +349,5 @@ def main():
 	# g = Game(recommend=True, game_size=game_size, blocks=blocks, win_length=win_length)
 
 	g = Game(recommend=True, blocks=5)
-	g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI)
+	g.play(algo=Game.ALPHABETA, player_x=Game.HUMAN, player_o=Game.HUMAN)
 	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
