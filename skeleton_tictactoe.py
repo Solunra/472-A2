@@ -56,8 +56,10 @@ class Game:
 		h_score = 0
 		num_tiles = 0
 		win_length = self.win_length
-		# Horizontal win
 		game_state_clone = self.current_state.copy()
+		game_state_vertical_clone = list(map(list, zip(*game_state_clone)))
+
+		# Horizontal win
 		for row in game_state_clone:
 			# print(f'current row {row}')
 			num_tiles = 0
@@ -66,8 +68,7 @@ class Game:
 					num_tiles += 1
 			h_score += win_length - num_tiles
 
-		# Vertical win
-		game_state_vertical_clone = list(map(list, zip(*game_state_clone)))
+		# # Vertical win
 		for col in game_state_vertical_clone:
 			num_tiles = 0
 			for index, symbol in enumerate(col):
@@ -76,6 +77,37 @@ class Game:
 			h_score += win_length - num_tiles
 		
 		# Diagonal win L-R, Up to Down
+		# height is a check. For diagonals of length 3 with n of 5, the diagonal can start on y = 0, 1, or 2
+		skip_number = -1
+		if self.game_size % 2 != 0:
+			skip_number = self.game_size % 2
+		for height in range(self.game_size - self.win_length + 1):
+			num_tiles = 0
+			# same logic but with rows
+			for row_value in range(self.game_size):
+				if skip_number and row_value == skip_number:
+					continue
+				if game_state_clone[height][row_value] == 'O':
+					num_tiles += 1
+					if row_value < math.floor(self.game_size / 2):
+						# from left to right
+						for length in range(1, self.win_length):
+							if game_state_clone[height + length][row_value + length] == 'O':
+								num_tiles += 1
+					else:
+						# from right to left
+						for length in range(1, self.win_length):
+							if game_state_clone[height + length][row_value - length] == 'O':
+								num_tiles += 1
+			h_score += win_length - num_tiles
+
+		# Debugging
+		print('****')
+		for row in game_state_clone:
+			print(row)
+		print(h_score)
+		print('****')
+			
 		return h_score
 
 	
@@ -215,7 +247,6 @@ class Game:
 		x = None
 		y = None
 		result = self.is_end()
-		print(f'the score is {self.h1_num_own_tiles()}')
 		if result == 'X':
 			return (-1, x, y)
 		elif result == 'O':
@@ -255,7 +286,6 @@ class Game:
 		x = None
 		y = None
 		result = self.is_end()
-		print(f'the score is {self.h1_num_own_tiles()}')
 		if result == 'X':
 			return (-1, x, y)
 		elif result == 'O':
