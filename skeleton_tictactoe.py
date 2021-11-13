@@ -11,12 +11,13 @@ class Game:
 	AI = 3
 
 	# n = game_size, b = blocks, s = win_length
-	def __init__(self, recommend = True, game_size = 3, blocks = 0, win_length = 3):
+	def __init__(self, recommend=True, game_size=3, blocks=0, win_length=3):
 		self.game_size = game_size
 		self.game_blocks = blocks
 		self.win_length = win_length
 		self.initialize_game()
 		self.recommend = recommend
+		self.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
 	def initialize_game(self):
 		game = []
@@ -38,10 +39,19 @@ class Game:
 
 	def draw_board(self):
 		print()
+		row = '  '
+		for board in range(0, self.game_size):
+			row = row + self.alphabet[board]
+		print(row)
+
+		game_row = ''
 		for y in range(0, self.game_size):
+			game_row = game_row + f'{y} '
 			for x in range(0, self.game_size):
-				print(F'{self.current_state[x][y]}', end="")
-			print()
+				game_row = game_row + F'{self.current_state[x][y]}'
+			print(game_row)
+			game_row = ''
+			print(end="")
 		print()
 		
 	def is_valid(self, px, py):
@@ -151,7 +161,7 @@ class Game:
 		for height in range(self.game_size - self.win_length + 1):
 			# same logic but with rows
 			for row_value in range(self.game_size):
-				if skip_number and row_value == skip_number:
+				if skip_middle and row_value == skip_number:
 					continue
 				if self.current_state[height][row_value] != '.' and self.current_state[height][row_value] != '-':
 					potential_winner = self.current_state[height][row_value]
@@ -188,8 +198,10 @@ class Game:
 	def input_move(self):
 		while True:
 			print(F'Player {self.player_turn}, enter your move:')
-			px = int(input('enter the x coordinate: '))
+			x_char = input('enter the x coordinate: ')
 			py = int(input('enter the y coordinate: '))
+			px = self.alphabet.index(x_char)
+			print(str(px))
 			if self.is_valid(px, py):
 				return (px,py)
 			else:
