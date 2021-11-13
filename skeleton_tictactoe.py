@@ -74,7 +74,6 @@ class Game:
 
 		# Horizontal win
 		for row in game_state_clone:
-			# print(f'current row {row}')
 			num_tiles = 0
 			for index, symbol in enumerate(row):
 				if symbol == 'O':
@@ -100,17 +99,12 @@ class Game:
 			num_tiles = 0
 			# same logic but with rows
 			for row_value in range(self.game_size):
-
 				num_tiles = 0
-
 				if skip_middle and row_value == skip_number:
 					continue
-
 				temp_num_tiles = 0
-
 				if game_state_clone[height][row_value] == 'O':
 					temp_num_tiles = 1
-
 				if row_value < math.floor(self.game_size / 2):
 					# from left to right
 					for length in range(1, win_length):
@@ -132,7 +126,72 @@ class Game:
 
 		return h_score
 
+	def h2_bunched_symbols(self):
+		h_score = 0
+		game_state_clone = self.current_state.copy()
+		game_state_vertical_clone = list(map(list, zip(*game_state_clone)))
 
+		# Horizontal win
+		for row in game_state_clone:
+			num_tiles = 0
+			for index, symbol in enumerate(row):
+				if symbol == 'O':
+					num_tiles += 1
+				if symbol == 'X':
+					num_tiles -= 1
+				if symbol == '-' and num_tiles < self.win_length:
+					num_tiles = 0
+			h_score += math.pow(math.copysign(100, num_tiles), num_tiles - self.win_length)
+		# Vertical win
+		for col in game_state_vertical_clone:
+			num_tiles = 0
+			for index, symbol in enumerate(col):
+				if symbol == 'O':
+					num_tiles += 1
+				if symbol == 'X':
+					num_tiles -= 1
+				if symbol == '-' and num_tiles < self.win_length:
+					num_tiles = 0
+			h_score += math.pow(math.copysign(100, num_tiles), num_tiles - self.win_length)
+		# Diagonal win
+		skip_middle = False
+		skip_number = -1
+		if self.game_size % 2 != 0:
+			skip_middle = True
+			skip_number = self.game_size % 2
+		for height in range(self.game_size - self.win_length + 1):
+			num_tiles = 0
+			# same logic but with rows
+			for row_value in range(self.game_size):
+				num_tiles = 0
+				if skip_middle and row_value == skip_number:
+					continue
+				temp_num_tiles = 0
+				if game_state_clone[height][row_value] == 'O':
+					temp_num_tiles = 1
+				elif game_state_clone[height][row_value] == 'X':
+					temp_num_tiles = -1
+				if row_value < math.floor(self.game_size / 2):
+					# from left to right
+					for length in range(1, self.win_length):
+						if game_state_clone[height + length][row_value + length] == 'O':
+							num_tiles += 1
+						if game_state_clone[height + length][row_value + length] == 'X':
+							num_tiles -= 1
+						if game_state_clone[height + length][row_value + length] == '-' and num_tiles < self.win_length:
+							num_tiles -= 1
+				else:
+					# from right to left
+					for length in range(1, self.win_length):
+						if game_state_clone[height + length][row_value - length] == 'O':
+							num_tiles += 1
+						if game_state_clone[height + length][row_value + length] == 'X':
+							num_tiles -= 1
+						if game_state_clone[height + length][row_value + length] == '-' and num_tiles < self.win_length:
+							num_tiles -= 1
+				h_score += math.pow(math.copysign(100, num_tiles), num_tiles - self.win_length)
+
+	
 	def is_end(self):
 		"""Returns the name of the player that won, . for a tie or None if the game hasn't ended"""
 		# Vertical win
@@ -174,7 +233,6 @@ class Game:
 			for index, symbol in enumerate(row):
 				if self.win_length - same_symbol_count > self.game_size - index:
 					break
-
 				if symbol == '-' or symbol == '.':
 					current_player = ''
 					same_symbol_count = 0
