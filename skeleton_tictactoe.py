@@ -330,7 +330,7 @@ class Game:
 			if (self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN):
 					if self.recommend:
 						print(F'Evaluation time: {round(end - start, 7)}s')
-						print(F'Recommended move: x = {x}, y = {y}')
+						print(F'Recommended move: x = {self.alphabet[x]}, y = {y}')
 					(x,y) = self.input_move()
 			if (self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI):
 						print(F'Evaluation time: {round(end - start, 7)}s')
