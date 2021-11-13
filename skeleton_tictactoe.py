@@ -56,7 +56,7 @@ class Game:
 			game_row = ''
 			print(end="")
 		print()
-		
+
 	def is_valid(self, px, py):
 		if px < 0 or px > self.game_size - 1 or py < 0 or py > self.game_size - 1:
 			return False
@@ -88,7 +88,7 @@ class Game:
 				if symbol == 'O':
 					num_tiles += 1
 			h_score += win_length - num_tiles
-		
+
 		# Diagonal win
 		# height is a check. For diagonals of length 3 with n of 5, the diagonal can start on y = 0, 1, or 2
 		skip_middle = False
@@ -100,17 +100,17 @@ class Game:
 			num_tiles = 0
 			# same logic but with rows
 			for row_value in range(self.game_size):
-				
+
 				num_tiles = 0
-				
+
 				if skip_middle and row_value == skip_number:
 					continue
-				
+
 				temp_num_tiles = 0
-				
+
 				if game_state_clone[height][row_value] == 'O':
 					temp_num_tiles = 1
-				
+
 				if row_value < math.floor(self.game_size / 2):
 					# from left to right
 					for length in range(1, win_length):
@@ -129,10 +129,10 @@ class Game:
 		# 	print(row)
 		# print(h_score)
 		# print('****')
-			
+
 		return h_score
 
-	
+
 	def is_end(self):
 		"""Returns the name of the player that won, . for a tie or None if the game hasn't ended"""
 		# Vertical win
@@ -258,7 +258,7 @@ class Game:
 			self.player_turn = 'X'
 		return self.player_turn
 
-	def minimax(self, max=False, depth=0):
+	def minimax(self, heuristic, max=False, depth=0):
 		# if you've exceeded the time limit, the AI loses
 		if time.time() - self.turn_start__time > self.max_execution_time:
 			raise TimeoutError
@@ -275,11 +275,11 @@ class Game:
 		y = None
 		result = self.is_end()
 		if result == 'X':
-			return (-1, x, y)
+			return -1, x, y
 		elif result == 'O':
-			return (1, x, y)
+			return 1, x, y
 		elif result == '.':
-			return (0, x, y)
+			return 0, x, y
 
 		for i in range(0, self.game_size):
 			for j in range(0, self.game_size):
@@ -290,7 +290,7 @@ class Game:
 							(v, _, _) = self.minimax(max=False, depth=depth + 1)
 						else:
 							# run heuristic on this intermediate state (get score for move at this position)
-							v = 0
+							v = heuristic()
 						if v > value:
 							value = v
 							x = i
@@ -301,15 +301,18 @@ class Game:
 							(v, _, _) = self.minimax(max=True, depth=depth + 1)
 						else:
 							# run heuristic on this intermediate state (get score for move at this position)
-							v = 0
+							v = heuristic()
 						if v < value:
 							value = v
 							x = i
 							y = j
 					self.current_state[i][j] = '.'
-		return (value, x, y)
+		return value, x, y
 
-	def alphabeta(self, alpha=-2, beta=2, max=False):
+	def alphabeta(self, heuristic, alpha=-2, beta=2, max=False):
+		# if you've exceeded the time limit, the AI loses
+		if time.time() - self.turn_start__time > self.max_execution_time:
+			raise TimeoutError
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
 		# -1 - win for 'X'
@@ -323,11 +326,11 @@ class Game:
 		y = None
 		result = self.is_end()
 		if result == 'X':
-			return (-1, x, y)
+			return -1, x, y
 		elif result == 'O':
-			return (1, x, y)
+			return 1, x, y
 		elif result == '.':
-			return (0, x, y)
+			return 0, x, y
 		for i in range(0, self.game_size):
 			for j in range(0, self.game_size):
 				if self.current_state[i][j] == '.':
@@ -346,24 +349,24 @@ class Game:
 							x = i
 							y = j
 					self.current_state[i][j] = '.'
-					if max: 
+					if max:
 						if value >= beta:
-							return (value, x, y)
+							return value, x, y
 						if value > alpha:
 							alpha = value
 					else:
 						if value <= alpha:
-							return (value, x, y)
+							return value, x, y
 						if value < beta:
 							beta = value
-		return (value, x, y)
+		return value, x, y
 
-	def play(self, algo=None, player_x=None, player_o=None):
-		if algo == None:
+	def play(self, algo=None, player_x=None, player_o=None, player_x_heuristic=None, player_o_heuristic=None):
+		if algo is None:
 			algo = self.ALPHABETA
-		if player_x == None:
+		if player_x is None:
 			player_x = self.HUMAN
-		if player_o == None:
+		if player_o is None:
 			player_o = self.HUMAN
 		while True:
 			self.draw_board()
@@ -373,14 +376,14 @@ class Game:
 			self.turn_start__time = start
 			if algo == self.MINIMAX:
 				if self.player_turn == 'X':
-					(_, x, y) = self.minimax(max=False)
+					(_, x, y) = self.minimax(player_x_heuristic, max=False)
 				else:
-					(_, x, y) = self.minimax(max=True)
+					(_, x, y) = self.minimax(player_o_heuristic, max=True)
 			else: # algo == self.ALPHABETA
 				if self.player_turn == 'X':
-					(m, x, y) = self.alphabeta(max=False)
+					(m, x, y) = self.alphabeta(player_x_heuristic, max=False)
 				else:
-					(m, x, y) = self.alphabeta(max=True)
+					(m, x, y) = self.alphabeta(player_o_heuristic, max=True)
 			end = time.time()
 			if (self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN):
 					if self.recommend:
@@ -416,5 +419,5 @@ def main():
 	# g = Game(recommend=True, game_size=game_size, blocks=blocks, win_length=win_length)
 
 	g = Game(recommend=True, blocks=5)
-	g.play(algo=Game.ALPHABETA, player_x=Game.HUMAN, player_o=Game.HUMAN)
+	g.play(algo=Game.ALPHABETA, player_x=Game.HUMAN, player_o=Game.HUMAN, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h1_num_own_tiles)
 	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
