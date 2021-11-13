@@ -11,7 +11,10 @@ class Game:
 	AI = 3
 
 	# n = game_size, b = blocks, s = win_length
-	def __init__(self, recommend=True, game_size=3, blocks=0, win_length=3):
+	def __init__(self, recommend=True, game_size=3, blocks=0, win_length=3, max_execution_time=7, max_depth=5):
+		self.max_depth = max_depth
+		self.turn_start__time = 0
+		self.max_execution_time = max_execution_time
 		self.game_size = game_size
 		self.game_blocks = blocks
 		self.win_length = win_length
@@ -255,7 +258,10 @@ class Game:
 			self.player_turn = 'X'
 		return self.player_turn
 
-	def minimax(self, max=False):
+	def minimax(self, max=False, depth=0):
+		# if you've exceeded the time limit, the AI loses
+		if time.time() - self.turn_start__time > self.max_execution_time:
+			raise TimeoutError
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
 		# -1 - win for 'X'
@@ -274,19 +280,28 @@ class Game:
 			return (1, x, y)
 		elif result == '.':
 			return (0, x, y)
+
 		for i in range(0, self.game_size):
 			for j in range(0, self.game_size):
 				if self.current_state[i][j] == '.':
 					if max:
 						self.current_state[i][j] = 'O'
-						(v, _, _) = self.minimax(max=False)
+						if depth < self.max_depth:
+							(v, _, _) = self.minimax(max=False, depth=depth + 1)
+						else:
+							# run heuristic on this intermediate state (get score for move at this position)
+							v = 0
 						if v > value:
 							value = v
 							x = i
 							y = j
 					else:
 						self.current_state[i][j] = 'X'
-						(v, _, _) = self.minimax(max=True)
+						if depth < self.max_depth:
+							(v, _, _) = self.minimax(max=True, depth=depth + 1)
+						else:
+							# run heuristic on this intermediate state (get score for move at this position)
+							v = 0
 						if v < value:
 							value = v
 							x = i
@@ -355,6 +370,7 @@ class Game:
 			if self.check_end():
 				return
 			start = time.time()
+			self.turn_start__time = start
 			if algo == self.MINIMAX:
 				if self.player_turn == 'X':
 					(_, x, y) = self.minimax(max=False)
