@@ -78,7 +78,7 @@ class Game:
 					num_tiles += 1
 			h_score += win_length - num_tiles
 
-		# # Vertical win
+		# Vertical win
 		for col in game_state_vertical_clone:
 			num_tiles = 0
 			for index, symbol in enumerate(col):
@@ -86,37 +86,46 @@ class Game:
 					num_tiles += 1
 			h_score += win_length - num_tiles
 		
-		# Diagonal win L-R, Up to Down
+		# Diagonal win
 		# height is a check. For diagonals of length 3 with n of 5, the diagonal can start on y = 0, 1, or 2
+		skip_middle = False
 		skip_number = -1
 		if self.game_size % 2 != 0:
+			skip_middle = True
 			skip_number = self.game_size % 2
-		for height in range(self.game_size - self.win_length + 1):
+		for height in range(self.game_size - win_length + 1):
 			num_tiles = 0
 			# same logic but with rows
 			for row_value in range(self.game_size):
-				if skip_number and row_value == skip_number:
+				
+				num_tiles = 0
+				
+				if skip_middle and row_value == skip_number:
 					continue
+				
+				temp_num_tiles = 0
+				
 				if game_state_clone[height][row_value] == 'O':
-					num_tiles += 1
-					if row_value < math.floor(self.game_size / 2):
-						# from left to right
-						for length in range(1, self.win_length):
-							if game_state_clone[height + length][row_value + length] == 'O':
-								num_tiles += 1
-					else:
-						# from right to left
-						for length in range(1, self.win_length):
-							if game_state_clone[height + length][row_value - length] == 'O':
-								num_tiles += 1
-			h_score += win_length - num_tiles
+					temp_num_tiles = 1
+				
+				if row_value < math.floor(self.game_size / 2):
+					# from left to right
+					for length in range(1, win_length):
+						if game_state_clone[height + length][row_value + length] == 'O':
+							num_tiles += 1
+				else:
+					# from right to left
+					for length in range(1, win_length):
+						if game_state_clone[height + length][row_value - length] == 'O':
+							num_tiles += 1
+				h_score += win_length - num_tiles - temp_num_tiles
 
 		# Debugging
-		print('****')
-		for row in game_state_clone:
-			print(row)
-		print(h_score)
-		print('****')
+		# print('****')
+		# for row in game_state_clone:
+		# 	print(row)
+		# print(h_score)
+		# print('****')
 			
 		return h_score
 
