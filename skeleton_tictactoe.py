@@ -11,9 +11,8 @@ class Game:
 	AI = 3
 
 	# n = game_size, b = blocks, s = win_length
-	def __init__(self, recommend=True, game_size=3, blocks=0, win_length=3, max_execution_time=7, max_depth=5):
-		self.max_depth = max_depth
-		self.turn_start__time = 0
+	def __init__(self, recommend=True, game_size=3, blocks=0, win_length=3, max_execution_time=7):
+		self.turn_start_time = 0
 		self.max_execution_time = max_execution_time
 		self.game_size = game_size
 		self.game_blocks = blocks
@@ -316,9 +315,9 @@ class Game:
 			self.player_turn = 'X'
 		return self.player_turn
 
-	def minimax(self, heuristic, max=False, depth=0):
+	def minimax(self, heuristic, max_depth, max=False, current_depth=0):
 		# if you've exceeded the time limit, the AI loses
-		if time.time() - self.turn_start__time > self.max_execution_time:
+		if time.time() - self.turn_start_time > self.max_execution_time:
 			raise TimeoutError
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
@@ -344,8 +343,8 @@ class Game:
 				if self.current_state[i][j] == '.':
 					if max:
 						self.current_state[i][j] = 'O'
-						if depth < self.max_depth:
-							(v, _, _) = self.minimax(max=False, depth=depth + 1)
+						if current_depth < max_depth:
+							(v, _, _) = self.minimax(heuristic, max_depth, max=False, current_depth=current_depth + 1)
 						else:
 							# run heuristic on this intermediate state (get score for move at this position)
 							v = heuristic()
@@ -355,8 +354,8 @@ class Game:
 							y = j
 					else:
 						self.current_state[i][j] = 'X'
-						if depth < self.max_depth:
-							(v, _, _) = self.minimax(max=True, depth=depth + 1)
+						if current_depth < max_depth:
+							(v, _, _) = self.minimax(heuristic, max_depth, max=True, current_depth=current_depth + 1)
 						else:
 							# run heuristic on this intermediate state (get score for move at this position)
 							v = heuristic()
@@ -367,9 +366,9 @@ class Game:
 					self.current_state[i][j] = '.'
 		return value, x, y
 
-	def alphabeta(self, heuristic, alpha=-2, beta=2, max=False):
+	def alphabeta(self, heuristic, max_depth, alpha=-2, beta=2, max=False, current_depth=0):
 		# if you've exceeded the time limit, the AI loses
-		if time.time() - self.turn_start__time > self.max_execution_time:
+		if time.time() - self.turn_start_time > self.max_execution_time:
 			raise TimeoutError
 		# Minimizing for 'X' and maximizing for 'O'
 		# Possible values are:
@@ -394,14 +393,20 @@ class Game:
 				if self.current_state[i][j] == '.':
 					if max:
 						self.current_state[i][j] = 'O'
-						(v, _, _) = self.alphabeta(alpha, beta, max=False)
+						if current_depth < max_depth:
+							(v, _, _) = self.alphabeta(heuristic, max_depth, alpha, beta, max=False, current_depth=current_depth+1)
+						else:
+							v = heuristic()
 						if v > value:
 							value = v
 							x = i
 							y = j
 					else:
 						self.current_state[i][j] = 'X'
-						(v, _, _) = self.alphabeta(alpha, beta, max=True)
+						if current_depth < max_depth:
+							(v, _, _) = self.alphabeta(heuristic, max_depth, alpha, beta, max=True, current_depth=current_depth+1)
+						else:
+							v = heuristic()
 						if v < value:
 							value = v
 							x = i
@@ -419,7 +424,7 @@ class Game:
 							beta = value
 		return value, x, y
 
-	def play(self, algo=None, player_x=None, player_o=None, player_x_heuristic=None, player_o_heuristic=None):
+	def play(self, algo=None, player_x=None, player_o=None, player_x_heuristic=None, player_o_heuristic=None, player_x_max_depth=5, player_o_max_depth=5):
 		if algo is None:
 			algo = self.ALPHABETA
 		if player_x is None:
@@ -431,18 +436,24 @@ class Game:
 			if self.check_end():
 				return
 			start = time.time()
-			self.turn_start__time = start
-			if algo == self.MINIMAX:
-				if self.player_turn == 'X':
-					(_, x, y) = self.minimax(player_x_heuristic, max=False)
-				else:
-					(_, x, y) = self.minimax(player_o_heuristic, max=True)
-			else: # algo == self.ALPHABETA
-				if self.player_turn == 'X':
-					(m, x, y) = self.alphabeta(player_x_heuristic, max=False)
-				else:
-					(m, x, y) = self.alphabeta(player_o_heuristic, max=True)
-			end = time.time()
+			try:
+				self.turn_start_time = start
+				if algo == self.MINIMAX:
+					if self.player_turn == 'X':
+						(_, x, y) = self.minimax(player_x_heuristic, player_x_max_depth, max=False)
+					else:
+						(_, x, y) = self.minimax(player_o_heuristic, player_o_max_depth, max=True)
+				else: # algo == self.ALPHABETA
+					if self.player_turn == 'X':
+						(m, x, y) = self.alphabeta(player_x_heuristic, player_x_max_depth, max=False)
+					else:
+						(m, x, y) = self.alphabeta(player_o_heuristic, player_o_max_depth, max=True)
+				end = time.time()
+			except TimeoutError:
+				print("The current AI player ran out of time!")
+				print(self.switch_player() + " wins by default!")
+				return
+
 			if (self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN):
 					if self.recommend:
 						print(F'Evaluation time: {round(end - start, 7)}s')
