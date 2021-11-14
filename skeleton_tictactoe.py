@@ -25,7 +25,7 @@ class Game:
 		self.recommend = recommend
 		self.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
-	def initialize_game(self):
+	def initialize_game(self, is_first_init = True):
 		game = []
 		for i in range(self.game_size):
 			game.append(['.'] * self.game_size)
@@ -44,11 +44,9 @@ class Game:
 			self.current_state[x][y] = '-'
 		
 		# Output to file
-		with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
-			file.write(f'Blocks:')
-			for block in list_of_blocks:
-				file.write(f'{block} ')
-			file.write(f'\n')
+		if (is_first_init):
+			with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
+				file.write(f'Blocks:{list_of_blocks}\n')
 
 	def draw_board(self):
 		with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
@@ -308,7 +306,7 @@ class Game:
 				print('The winner is O!')
 			elif self.result == '.':
 				print("It's a tie!")
-			self.initialize_game()
+			self.initialize_game(False)
 		return self.result
 
 	def input_move(self):
