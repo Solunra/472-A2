@@ -18,12 +18,11 @@ class Game:
 		self.game_size = game_size
 		self.game_blocks = blocks
 		self.win_length = win_length
-		open(f'gameTrace-{game_size}{blocks}{win_length}{max_execution_time}.txt', 'w').close()
-		with open(f'gameTrace-{game_size}{blocks}{win_length}{max_execution_time}.txt', 'a') as file:
-			file.write(f'n = {game_size} b = {blocks} s = {win_length} t = {max_execution_time}\n')
+		self.logger = open(f'gameTrace-{game_size}{blocks}{win_length}{max_execution_time}.txt', 'w')
 		self.initialize_game()
 		self.recommend = recommend
 		self.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+		self.logger.write(f'n = {game_size} b = {blocks} s = {win_length} t = {max_execution_time}\n')
 
 	def initialize_game(self, is_first_init = True):
 		game = []
@@ -44,30 +43,29 @@ class Game:
 			self.current_state[x][y] = '-'
 		
 		# Output to file
-		if (is_first_init):
-			with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
-				file.write(f'Blocks:{list_of_blocks}\n')
+		if is_first_init:
+			self.logger.write(f'Blocks:{list_of_blocks}\n')
 
 	def draw_board(self):
-		with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
-			print()
-			row = '  '
-			for board in range(0, self.game_size):
-				row = row + self.alphabet[board]
-			print(row)
-			file.write(f'{row}\n')
 
+		print()
+		row = '  '
+		for board in range(0, self.game_size):
+			row = row + self.alphabet[board]
+		print(row)
+		self.logger.write(f'{row}\n')
+
+		game_row = ''
+		for y in range(0, self.game_size):
+			game_row = game_row + f'{y} '
+			for x in range(0, self.game_size):
+				game_row = game_row + F'{self.current_state[x][y]}'
+			print(game_row)
+			self.logger.write(f'{game_row}\n')
 			game_row = ''
-			for y in range(0, self.game_size):
-				game_row = game_row + f'{y} '
-				for x in range(0, self.game_size):
-					game_row = game_row + F'{self.current_state[x][y]}'
-				print(game_row)
-				file.write(f'{game_row}\n')
-				game_row = ''
-				print(end="")
-			print()
-			file.write('\n')
+			print(end="")
+		print()
+		self.logger.write('\n')
 
 	def is_valid(self, px, py):
 		if px < 0 or px > self.game_size - 1 or py < 0 or py > self.game_size - 1:
@@ -445,9 +443,9 @@ class Game:
 		if player_o is None:
 			player_o = self.HUMAN
 
-		with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
-			file.write(f'Player 1: {player_x} d={player_x_max_depth} a={algo} e={player_x_heuristic.__name__} \n')
-			file.write(f'Player 1: {player_o} d={player_o_max_depth} a={algo} e={player_o_heuristic.__name__} \n')
+
+		self.logger.write(f'Player 1: {player_x} d={player_x_max_depth} a={algo} e={player_x_heuristic.__name__} \n')
+		self.logger.write(f'Player 1: {player_o} d={player_o_max_depth} a={algo} e={player_o_heuristic.__name__} \n')
 		
 		while True:
 			self.draw_board()
@@ -477,18 +475,15 @@ class Game:
 						print(F'Evaluation time: {round(end - start, 7)}s')
 						print(F'Recommended move: x = {self.alphabet[x]}, y = {y}')
 					(x,y) = self.input_move()
-
-					with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
-						file.write(f'Real Player {self.player_turn} plays: x = {x}, y = {y}\n')
-						file.write(f'Evaluation time: {round(end - start, 7)}s\n')
+					self.logger.write(f'Real Player {self.player_turn} plays: x = {x}, y = {y}\n')
+					self.logger.write(f'Evaluation time: {round(end - start, 7)}s\n')
 
 			if (self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI):
 						print(F'Evaluation time: {round(end - start, 7)}s')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
 
-						with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
-							file.write(f'Player {self.player_turn} under AI control plays: x = {x}, y = {y}\n')
-							file.write(f'Evaluation time: {round(end - start, 7)}s\n')
+						self.logger.write(f'Player {self.player_turn} under AI control plays: x = {x}, y = {y}\n')
+						self.logger.write(f'Evaluation time: {round(end - start, 7)}s\n')
 
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
@@ -514,6 +509,9 @@ def main():
 	# 	if win_length < 3 or win_length > game_size:
 	# 		print(f'Win length must be between 3 and {game_size}')
 	# g = Game(recommend=True, game_size=game_size, blocks=blocks, win_length=win_length)
-	g = Game(recommend=True, blocks=1, game_size=3)
-	g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h1_num_own_tiles)
+	try:
+		g = Game(recommend=True, blocks=1, game_size=3)
+		g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h1_num_own_tiles)
+	finally:
+		g.logger.close()
 	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
