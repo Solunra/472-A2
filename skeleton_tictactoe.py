@@ -9,6 +9,7 @@ class Game:
 	ALPHABETA = 1
 	HUMAN = 2
 	AI = 3
+	INITIAL_HEURISTIC_SCORE = 9999999999999
 
 	# n = game_size, b = blocks, s = win_length
 	def __init__(self, recommend=True, game_size=3, blocks=0, win_length=3, max_execution_time=7):
@@ -325,9 +326,9 @@ class Game:
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
-		value = 2
+		value = Game.INITIAL_HEURISTIC_SCORE
 		if max:
-			value = -2
+			value = -Game.INITIAL_HEURISTIC_SCORE
 		x = None
 		y = None
 		result = self.is_end()
@@ -376,9 +377,9 @@ class Game:
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
-		value = 2
+		value = Game.INITIAL_HEURISTIC_SCORE
 		if max:
-			value = -2
+			value = -Game.INITIAL_HEURISTIC_SCORE
 		x = None
 		y = None
 		result = self.is_end()
@@ -487,6 +488,6 @@ def main():
 	# 		print(f'Win length must be between 3 and {game_size}')
 	# g = Game(recommend=True, game_size=game_size, blocks=blocks, win_length=win_length)
 
-	g = Game(recommend=True, blocks=5)
-	g.play(algo=Game.ALPHABETA, player_x=Game.HUMAN, player_o=Game.HUMAN, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h1_num_own_tiles)
+	g = Game(recommend=True, blocks=1, game_size=3)
+	g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h1_num_own_tiles)
 	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
