@@ -482,6 +482,7 @@ class Game:
 
 					with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
 						file.write(f'Real Player {self.player_turn} plays: x = {x}, y = {y}\n')
+						file.write(f'Evaluation time: {round(end - start, 7)}s\n')
 
 			if (self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI):
 						print(F'Evaluation time: {round(end - start, 7)}s')
@@ -489,6 +490,7 @@ class Game:
 
 						with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
 							file.write(f'Player {self.player_turn} under AI control plays: x = {x}, y = {y}\n')
+							file.write(f'Evaluation time: {round(end - start, 7)}s\n')
 
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()

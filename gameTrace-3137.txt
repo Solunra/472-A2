@@ -1,58 +1,66 @@
 n = 3 b = 1 s = 3 t = 7
-Blocks:(2, 2) 
+Blocks:(0, 0) 
 Player 1: 3 d=5 a=1 e=h1_num_own_tiles 
 Player 1: 3 d=5 a=1 e=h1_num_own_tiles 
   ABC
-0 ...
+0 -..
 1 ...
-2 ..-
+2 ...
 
 Player X under AI control plays: x = 0, y = 1
+Evaluation time: 0.0100963s
   ABC
-0 ...
+0 -..
 1 X..
-2 ..-
+2 ...
 
-Player O under AI control plays: x = 0, y = 0
+Player O under AI control plays: x = 0, y = 2
+Evaluation time: 0.0020003s
   ABC
-0 O..
+0 -..
 1 X..
-2 ..-
+2 O..
 
-Player X under AI control plays: x = 1, y = 0
+Player X under AI control plays: x = 2, y = 1
+Evaluation time: 0.0039983s
   ABC
-0 OX.
-1 X..
-2 ..-
+0 -..
+1 X.X
+2 O..
 
 Player O under AI control plays: x = 1, y = 1
+Evaluation time: 0.0020027s
   ABC
-0 OX.
-1 XO.
-2 ..-
-
-Player X under AI control plays: x = 0, y = 2
-  ABC
-0 OX.
-1 XO.
-2 X.-
-
-Player O under AI control plays: x = 1, y = 2
-  ABC
-0 OX.
-1 XO.
-2 XO-
+0 -..
+1 XOX
+2 O..
 
 Player X under AI control plays: x = 2, y = 0
+Evaluation time: 0.0009985s
   ABC
-0 OXX
-1 XO.
-2 XO-
+0 -.X
+1 XOX
+2 O..
 
-Player O under AI control plays: x = 2, y = 1
+Player O under AI control plays: x = 2, y = 2
+Evaluation time: 0.0010002s
   ABC
-0 OXX
-1 XOO
-2 XO-
+0 -.X
+1 XOX
+2 O.O
 
-Blocks:(1, 0) 
+Player X under AI control plays: x = 1, y = 2
+Evaluation time: 0.0s
+  ABC
+0 -.X
+1 XOX
+2 OXO
+
+Player O under AI control plays: x = 1, y = 0
+Evaluation time: 0.0s
+  ABC
+0 -OX
+1 XOX
+2 OXO
+
+Blocks:(0, 1) 
