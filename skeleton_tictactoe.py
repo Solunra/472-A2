@@ -51,21 +51,25 @@ class Game:
 			file.write(f'\n')
 
 	def draw_board(self):
-		print()
-		row = '  '
-		for board in range(0, self.game_size):
-			row = row + self.alphabet[board]
-		print(row)
+		with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
+			print()
+			row = '  '
+			for board in range(0, self.game_size):
+				row = row + self.alphabet[board]
+			print(row)
+			file.write(f'{row}\n')
 
-		game_row = ''
-		for y in range(0, self.game_size):
-			game_row = game_row + f'{y} '
-			for x in range(0, self.game_size):
-				game_row = game_row + F'{self.current_state[x][y]}'
-			print(game_row)
 			game_row = ''
-			print(end="")
-		print()
+			for y in range(0, self.game_size):
+				game_row = game_row + f'{y} '
+				for x in range(0, self.game_size):
+					game_row = game_row + F'{self.current_state[x][y]}'
+				print(game_row)
+				file.write(f'{game_row}\n')
+				game_row = ''
+				print(end="")
+			print()
+			file.write('\n')
 
 	def is_valid(self, px, py):
 		if px < 0 or px > self.game_size - 1 or py < 0 or py > self.game_size - 1:
@@ -475,9 +479,17 @@ class Game:
 						print(F'Evaluation time: {round(end - start, 7)}s')
 						print(F'Recommended move: x = {self.alphabet[x]}, y = {y}')
 					(x,y) = self.input_move()
+
+					with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
+						file.write(f'Real Player {self.player_turn} plays: x = {x}, y = {y}\n')
+
 			if (self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI):
 						print(F'Evaluation time: {round(end - start, 7)}s')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
+
+						with open(f'gameTrace-{self.game_size}{self.game_blocks}{self.win_length}{self.max_execution_time}.txt', 'a') as file:
+							file.write(f'Player {self.player_turn} under AI control plays: x = {x}, y = {y}\n')
+
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
 

@@ -1,5 +1,58 @@
 n = 3 b = 1 s = 3 t = 7
-Blocks:(0, 0) 
+Blocks:(2, 2) 
 Player 1: 3 d=5 a=1 e=h1_num_own_tiles 
 Player 1: 3 d=5 a=1 e=h1_num_own_tiles 
-Blocks:(1, 1) 
+  ABC
+0 ...
+1 ...
+2 ..-
+
+Player X under AI control plays: x = 0, y = 1
+  ABC
+0 ...
+1 X..
+2 ..-
+
+Player O under AI control plays: x = 0, y = 0
+  ABC
+0 O..
+1 X..
+2 ..-
+
+Player X under AI control plays: x = 1, y = 0
+  ABC
+0 OX.
+1 X..
+2 ..-
+
+Player O under AI control plays: x = 1, y = 1
+  ABC
+0 OX.
+1 XO.
+2 ..-
+
+Player X under AI control plays: x = 0, y = 2
+  ABC
+0 OX.
+1 XO.
+2 X.-
+
+Player O under AI control plays: x = 1, y = 2
+  ABC
+0 OX.
+1 XO.
+2 XO-
+
+Player X under AI control plays: x = 2, y = 0
+  ABC
+0 OXX
+1 XO.
+2 XO-
+
+Player O under AI control plays: x = 2, y = 1
+  ABC
+0 OXX
+1 XOO
+2 XO-
+
+Blocks:(1, 0) 
