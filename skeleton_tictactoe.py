@@ -23,6 +23,7 @@ class Game:
 		self.recommend = recommend
 		self.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		self.logger.write(f'n = {game_size} b = {blocks} s = {win_length} t = {max_execution_time}\n')
+		self.depths = []
 
 	def initialize_game(self, is_first_init = True):
 		game = []
@@ -377,6 +378,7 @@ class Game:
 							value = v
 							x = i
 							y = j
+					self.depths.append(current_depth)
 					self.current_state[i][j] = '.'
 		return value, x, y
 
@@ -425,6 +427,7 @@ class Game:
 							value = v
 							x = i
 							y = j
+					self.depths.append(current_depth)
 					self.current_state[i][j] = '.'
 					if max:
 						if value >= beta:
@@ -468,6 +471,7 @@ class Game:
 					else:
 						(m, x, y) = self.alphabeta(player_o_heuristic, player_o_max_depth, max=True)
 				end = time.time()
+
 			except TimeoutError:
 				print("The current AI player ran out of time!")
 				print(self.switch_player() + " wins by default!")
@@ -479,14 +483,19 @@ class Game:
 						print(F'Recommended move: x = {self.alphabet[x]}, y = {y}')
 					(x,y) = self.input_move()
 					self.logger.write(f'Real Player {self.player_turn} plays: x = {x}, y = {y}\n')
-					self.logger.write(f'Evaluation time: {round(end - start, 7)}s\n')
+					self.logger.write(f'i Evaluation time: {round(end - start, 7)}s\n')
 
 			if (self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI):
 						print(F'Evaluation time: {round(end - start, 7)}s')
 						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
 
 						self.logger.write(f'Player {self.player_turn} under AI control plays: x = {x}, y = {y}\n')
-						self.logger.write(f'Evaluation time: {round(end - start, 7)}s\n')
+						self.logger.write(f'i Evaluation time: {round(end - start, 7)}s\n')
+			
+			# average depth
+			avg_depth = sum(self.depths) / len(self.depths)
+			self.logger.write(f'iv Average Evaluation Depth (AD) is: {avg_depth}\n')
+			self.depths = []
 
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
