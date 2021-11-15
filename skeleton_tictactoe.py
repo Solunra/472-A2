@@ -300,10 +300,13 @@ class Game:
 		if self.result != None:
 			if self.result == 'X':
 				print('The winner is X!')
+				self.logger.write('The winner is X!')
 			elif self.result == 'O':
 				print('The winner is O!')
+				self.logger.write('The winner is O!')
 			elif self.result == '.':
 				print("It's a tie!")
+				self.logger.write('It\'s a tie!')
 			self.initialize_game(False)
 		return self.result
 
