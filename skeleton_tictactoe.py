@@ -487,9 +487,9 @@ class Game:
 
 			if (self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI):
 						print(F'Evaluation time: {round(end - start, 7)}s')
-						print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
+						print(F'Player {self.player_turn} under AI control plays: x = {self.alphabet[x]}, y = {y}')
 
-						self.logger.write(f'Player {self.player_turn} under AI control plays: x = {x}, y = {y}\n')
+						self.logger.write(f'Player {self.player_turn} under AI control plays: x = {self.alphabet[x]}, y = {y}\n')
 						self.logger.write(f'i Evaluation time: {round(end - start, 7)}s\n')
 			
 			# average depth
