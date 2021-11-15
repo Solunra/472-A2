@@ -518,13 +518,29 @@ class Game:
 			self.draw_board()
 			winner = self.check_end()
 			if winner:
-				game_metrics["winner"] = winner
 				if winner == 'O':
-					game_metrics['winning_heuristic'] = player_x_heuristic.__name__
+					game_metrics["o_wins"] = 1
+					game_metrics["x_wins"] = 0
+					if player_o_heuristic.__name__ == self.h1_num_own_tiles.__name__:
+						game_metrics['h1_wins'] = 1
+						game_metrics['h2_wins'] = 0
+					else:
+						game_metrics['h1_wins'] = 0
+						game_metrics['h2_wins'] = 1
 				elif winner == 'X':
-					game_metrics['winning_heuristic'] = player_o_heuristic.__name__
+					game_metrics["o_wins"] = 0
+					game_metrics["x_wins"] = 1
+					if player_x_heuristic.__name__ == self.h1_num_own_tiles.__name__:
+						game_metrics['h1_wins'] = 1
+						game_metrics['h2_wins'] = 0
+					else:
+						game_metrics['h1_wins'] = 0
+						game_metrics['h2_wins'] = 1
 				else:
-					game_metrics['winning_heuristic'] = 'None'
+					game_metrics["o_wins"] = 0
+					game_metrics["x_wins"] = 0
+					game_metrics['h1_wins'] = 0
+					game_metrics['h2_wins'] = 0
 				break
 			start = time.time()
 			try:
@@ -587,10 +603,13 @@ class Game:
 		# 6 End-Game Heuristics
 
 		self.logger.write(f'\n')
-		self.logger.write(f'6(b)i   Average evaluation time: {sum(self.evaluation_time)/len(self.evaluation_time)}\n')
+		avg_eval_time = sum(self.evaluation_time)/len(self.evaluation_time)
+		self.logger.write(f'6(b)i   Average evaluation time: {avg_eval_time}\n')
+		game_metrics['avg_eval_time'] = avg_eval_time
 		sum_of_all_searched_state = 0
 		for depth_dict in self.depth_dictionary_memory:
 			sum_of_all_searched_state += sum(depth_dict.values())
+		game_metrics['sum_of_all_searched_state'] = sum_of_all_searched_state
 		self.logger.write(f'6(b)ii  Total heuristic evaluations: {sum_of_all_searched_state}\n')
 		total_depth = {}
 		for depth_dict in self.depth_dictionary_memory:
@@ -599,9 +618,15 @@ class Game:
 					total_depth[depth] = count
 				else:
 					total_depth[depth] += count
+		game_metrics['total_depth'] = total_depth
 		self.logger.write(f'6(b)iii Evaluations by depth: {total_depth}\n')
-		self.logger.write(f'6(b)iv  Average evaluation depth: {sum(self.depths_memory)/len(self.depths_memory)}\n')
-		self.logger.write(f'6(b)v   Average recursion depth: {sum(self.ard_memory)/len(self.ard_memory)}\n')
+		average_eval_depth = sum(self.depths_memory)/len(self.depths_memory)
+		game_metrics['average_eval_depth'] = average_eval_depth
+		self.logger.write(f'6(b)iv  Average evaluation depth: {average_eval_depth}\n')
+		average_recursion_depth = sum(self.ard_memory)/len(self.ard_memory)
+		game_metrics['average_recursion_depth'] = average_recursion_depth
+		self.logger.write(f'6(b)v   Average recursion depth: {average_recursion_depth}\n')
+		game_metrics['moves_counter'] = moves_counter
 		self.logger.write(f'6(b)vi  Total moves: {moves_counter}\n')
 		return game_metrics
 
@@ -634,13 +659,13 @@ def main(choose_options=False):
 	else:
 		# Round parameters
 		num_rounds = 10 # must be even!
-		game_size = 3
+		game_size = 4
 		blocks = 1
 		win_length = 3
 		max_execution_time = 7
 		# player parameters
-		player_o_heuristic = 'h1'
-		player_x_heuristic = 'h2'
+		player_o_heuristic = 'h2'
+		player_x_heuristic = 'h1'
 		player_x_max_depth = 7
 		player_o_max_depth = 7
 		algo = Game.ALPHABETA
@@ -668,7 +693,16 @@ def main(choose_options=False):
 			# averaging the entries in the dicts
 			for metrics_index in range(1, len(game_metrics_list)):
 				for key,value in game_metrics_list[metrics_index].items():
-					average_metrics[key] += value
+					if type(value) is dict:
+						continue
+					else:
+						average_metrics[key] += value
 
-			for key, value in average_metrics:
-				average_metrics[key] = value/len(game_metrics_list)
+			for key, value in average_metrics.items():
+				if type(value) is dict:
+					continue
+				else:
+					average_metric = value/len(game_metrics_list)
+					if key.endswith('wins'):
+						average_metric = str(average_metric * 100) + '%'
+					round_file.write(f'{key}: {average_metric}\n')
