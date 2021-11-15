@@ -24,6 +24,7 @@ class Game:
 		self.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 		self.logger.write(f'n = {game_size} b = {blocks} s = {win_length} t = {max_execution_time}\n')
 		self.depths = []
+		self.depth_dictionary = {}
 
 	def initialize_game(self, is_first_init = True):
 		game = []
@@ -378,7 +379,14 @@ class Game:
 							value = v
 							x = i
 							y = j
-					self.depths.append(current_depth)
+					true_depth = current_depth + 1
+					self.depths.append(true_depth)
+
+					if (current_depth not in self.depth_dictionary.keys()):
+						self.depth_dictionary[true_depth] = 1
+					else:
+						self.depth_dictionary[true_depth] += 1
+					
 					self.current_state[i][j] = '.'
 		return value, x, y
 
@@ -427,7 +435,14 @@ class Game:
 							value = v
 							x = i
 							y = j
-					self.depths.append(current_depth)
+					true_depth = current_depth + 1
+					self.depths.append(true_depth)
+					
+					if (true_depth not in self.depth_dictionary.keys()):
+						self.depth_dictionary[true_depth] = 1
+					else:
+						self.depth_dictionary[true_depth] += 1
+					
 					self.current_state[i][j] = '.'
 					if max:
 						if value >= beta:
@@ -491,6 +506,13 @@ class Game:
 
 						self.logger.write(f'Player {self.player_turn} under AI control plays: x = {self.alphabet[x]}, y = {y}\n')
 						self.logger.write(f'i Evaluation time: {round(end - start, 7)}s\n')
+			
+			# total num states / num states for each depth
+			sum_states = sum(self.depth_dictionary.values())
+			self.logger.write(f'ii Heuristics evaluations: {sum_states}\n')
+			self.logger.write(f'iii Evaluations by depth: {self.depth_dictionary}\n')
+			self.depth_dictionary = {}
+
 			
 			# average depth
 			avg_depth = sum(self.depths) / len(self.depths)
