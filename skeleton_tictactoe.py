@@ -25,6 +25,10 @@ class Game:
 		self.logger.write(f'n = {game_size} b = {blocks} s = {win_length} t = {max_execution_time}\n')
 		self.depths = []
 		self.depth_dictionary = {}
+		self.depths_memory = []
+		self.depth_dictionary_memory = []
+		self.evaluation_time = []
+		self.ard_memory = []
 
 	def initialize_game(self, is_first_init = True):
 		game = []
@@ -433,11 +437,13 @@ class Game:
 		for i in range(0, self.game_size):
 			for j in range(0, self.game_size):
 				if self.current_state[i][j] == '.':
+					d_value = 0
 					if max:
 						self.current_state[i][j] = 'O'
 						if current_depth < max_depth:
 							(v, _, _, d) = self.alphabeta(heuristic, max_depth, alpha, beta, max=False, current_depth=current_depth+1)
-							if d is not None:
+							d_value = d
+							if d != 0:
 								depths_list.append(d)
 						else:
 							v = heuristic()
@@ -449,7 +455,8 @@ class Game:
 						self.current_state[i][j] = 'X'
 						if current_depth < max_depth:
 							(v, _, _, d) = self.alphabeta(heuristic, max_depth, alpha, beta, max=True, current_depth=current_depth+1)
-							if d is not None:
+							d_value = d
+							if d != 0:
 								depths_list.append(d)
 						else:
 							v = heuristic()
@@ -468,18 +475,18 @@ class Game:
 					self.current_state[i][j] = '.'
 					if max:
 						if value >= beta:
-							return value, x, y, None
+							return value, x, y, d_value
 						if value > alpha:
 							alpha = value
 					else:
 						if value <= alpha:
-							return value, x, y, None
+							return value, x, y, d_value
 						if value < beta:
 							beta = value
 
 		if len(depths_list) == 0:
 			return value, x, y, current_depth
-		
+
 		avg_depth_for_node = sum(depths_list) / len(depths_list)
 		return value, x, y, avg_depth_for_node
 
@@ -493,12 +500,14 @@ class Game:
 
 
 		self.logger.write(f'Player 1: {player_x} d={player_x_max_depth} a={algo} e={player_x_heuristic.__name__} \n')
-		self.logger.write(f'Player 1: {player_o} d={player_o_max_depth} a={algo} e={player_o_heuristic.__name__} \n')
+		self.logger.write(f'Player 2: {player_o} d={player_o_max_depth} a={algo} e={player_o_heuristic.__name__} \n')
+
+		moves_counter = 0
 		
 		while True:
 			self.draw_board()
 			if self.check_end():
-				return
+				break
 			start = time.time()
 			try:
 				self.turn_start_time = start
@@ -519,6 +528,10 @@ class Game:
 				print(self.switch_player() + " wins by default!")
 				return
 
+			moves_counter += 1
+
+			self.evaluation_time.append(end-start)
+
 			if (self.player_turn == 'X' and player_x == self.HUMAN) or (self.player_turn == 'O' and player_o == self.HUMAN):
 					if self.recommend:
 						print(F'Evaluation time: {round(end - start, 7)}s')
@@ -538,44 +551,70 @@ class Game:
 			sum_states = sum(self.depth_dictionary.values())
 			self.logger.write(f'ii Heuristics evaluations: {sum_states}\n')
 			self.logger.write(f'iii Evaluations by depth: {self.depth_dictionary}\n')
+			self.depth_dictionary_memory.append(self.depth_dictionary)
 			self.depth_dictionary = {}
 
-			
 			# average depth
 			avg_depth = sum(self.depths) / len(self.depths)
 			self.logger.write(f'iv Average Evaluation Depth (AD) is: {avg_depth}\n')
+			self.depths_memory.append(avg_depth)
 			self.depths = []
 
 			# average recursive depth
 			self.logger.write(f'v Average Evaluation Recursive Depth (ARD) is: {ard}\n')
+			self.ard_memory.append(ard)
 
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
+		# 6 End-Game Heuristics
+
+		self.logger.write(f'\n')
+		self.logger.write(f'6(b)i   Average evaluation time: {sum(self.evaluation_time)/len(self.evaluation_time)}\n')
+		sum_of_all_searched_state = 0
+		for depth_dict in self.depth_dictionary_memory:
+			sum_of_all_searched_state += sum(depth_dict.values())
+		self.logger.write(f'6(b)ii  Total heuristic evaluations: {sum_of_all_searched_state}\n')
+		total_depth = {}
+		for depth_dict in self.depth_dictionary_memory:
+			for depth, count in depth_dict.items():
+				if depth not in total_depth.keys():
+					total_depth[depth] = count
+				else:
+					total_depth[depth] += count
+		self.logger.write(f'6(b)iii Evaluations by depth: {total_depth}\n')
+		self.logger.write(f'6(b)iv  Average evaluation depth: {sum(self.depths_memory)/len(self.depths_memory)}\n')
+		self.logger.write(f'6(b)v   Average recursion depth: {sum(self.ard_memory)/len(self.ard_memory)}\n')
+		self.logger.write(f'6(b)vi  Total moves: {moves_counter}\n')
 
 
-def main():
+def main(choose_options=False):
 	# Uncomment when needed
-	# game_size = 0
-	# while game_size < 3 or game_size > 10:
-	# 	game_size = int(input(f'Please enter the game size: '))
-	# 	if game_size < 3 or game_size > 10:
-	# 		print(f'Game\'s size must be between 3 and 10')
-	#
-	# blocks = -1
-	# while blocks < 0 or blocks > (game_size * 2):
-	# 	blocks = int(input(f'Please enter the block amount: '))
-	# 	if blocks < 0 or blocks > (game_size * 2):
-	# 		print(f'Number of blocks must be between 0 and {game_size * 2}')
-	#
-	# win_length = 0
-	# while win_length < 3 or win_length > game_size:
-	# 	win_length = int(input(f'Please enter the win length: '))
-	# 	if win_length < 3 or win_length > game_size:
-	# 		print(f'Win length must be between 3 and {game_size}')
-	# g = Game(recommend=True, game_size=game_size, blocks=blocks, win_length=win_length)
-	try:
-		g = Game(recommend=True, blocks=1, game_size=3)
-		g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h2_bunched_symbols)
-	finally:
-		g.logger.close()
-	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
+	if choose_options:
+		game_size = 0
+		while game_size < 3 or game_size > 10:
+			game_size = int(input(f'Please enter the game size: '))
+			if game_size < 3 or game_size > 10:
+				print(f'Game\'s size must be between 3 and 10')
+
+		blocks = -1
+		while blocks < 0 or blocks > (game_size * 2):
+			blocks = int(input(f'Please enter the block amount: '))
+			if blocks < 0 or blocks > (game_size * 2):
+				print(f'Number of blocks must be between 0 and {game_size * 2}')
+
+		win_length = 0
+		while win_length < 3 or win_length > game_size:
+			win_length = int(input(f'Please enter the win length: '))
+			if win_length < 3 or win_length > game_size:
+				print(f'Win length must be between 3 and {game_size}')
+		try:
+			g = Game(recommend=True, game_size=game_size, blocks=blocks, win_length=win_length)
+			g.play(algo=Game.ALPHABETA, player_x=Game.HUMAN, player_o=Game.HUMAN, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h2_bunched_symbols)
+		finally:
+			g.logger.close()
+	else:
+		try:
+			g = Game(recommend=True, blocks=1, game_size=3)
+			g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h2_bunched_symbols)
+		finally:
+			g.logger.close()
