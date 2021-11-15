@@ -42,7 +42,7 @@ class Game:
 				list_of_blocks.append(new_position)
 		# Place each blocks
 		for x, y in list_of_blocks:
-			self.current_state[x][y] = '-'
+			self.current_state[x][y] = '*'
 		
 		# Output to file
 		if is_first_init:
@@ -151,7 +151,7 @@ class Game:
 					num_tiles += 1
 				if symbol == 'X':
 					num_tiles -= 1
-				if symbol == '-' and num_tiles < self.win_length:
+				if symbol == '*' and num_tiles < self.win_length:
 					num_tiles = 0
 			h_score += math.pow(math.copysign(100, num_tiles), num_tiles - self.win_length)
 		# Vertical win
@@ -162,7 +162,7 @@ class Game:
 					num_tiles += 1
 				if symbol == 'X':
 					num_tiles -= 1
-				if symbol == '-' and num_tiles < self.win_length:
+				if symbol == '*' and num_tiles < self.win_length:
 					num_tiles = 0
 			h_score += math.pow(math.copysign(100, num_tiles), num_tiles - self.win_length)
 		# Diagonal win
@@ -190,18 +190,19 @@ class Game:
 							num_tiles += 1
 						if game_state_clone[height + length][row_value + length] == 'X':
 							num_tiles -= 1
-						if game_state_clone[height + length][row_value + length] == '-' and num_tiles < self.win_length:
+						if game_state_clone[height + length][row_value + length] == '*' and num_tiles < self.win_length:
 							num_tiles -= 1
 				else:
 					# from right to left
 					for length in range(1, self.win_length):
 						if game_state_clone[height + length][row_value - length] == 'O':
 							num_tiles += 1
-						if game_state_clone[height + length][row_value + length] == 'X':
+						if game_state_clone[height + length][row_value - length] == 'X':
 							num_tiles -= 1
-						if game_state_clone[height + length][row_value + length] == '-' and num_tiles < self.win_length:
+						if game_state_clone[height + length][row_value - length] == '*' and num_tiles < self.win_length:
 							num_tiles -= 1
 				h_score += math.pow(math.copysign(100, num_tiles), num_tiles - self.win_length)
+		return h_score
 
 	
 	def is_end(self):
@@ -245,7 +246,7 @@ class Game:
 			for index, symbol in enumerate(row):
 				if self.win_length - same_symbol_count > self.game_size - index:
 					break
-				if symbol == '-' or symbol == '.':
+				if symbol == '*' or symbol == '.':
 					current_player = ''
 					same_symbol_count = 0
 				elif symbol == current_player:
@@ -277,7 +278,7 @@ class Game:
 			for row_value in range(self.game_size):
 				if skip_middle and row_value == skip_number:
 					continue
-				if self.current_state[height][row_value] != '.' and self.current_state[height][row_value] != '-':
+				if self.current_state[height][row_value] != '.' and self.current_state[height][row_value] != '*':
 					potential_winner = self.current_state[height][row_value]
 					same_count = 1
 					if row_value < math.floor(self.game_size / 2):
@@ -301,13 +302,13 @@ class Game:
 		# Printing the appropriate message if the game has ended
 		if self.result != None:
 			if self.result == 'X':
-				print('The winner is X!')
+				print('The winner is X! :v')
 				self.logger.write('The winner is X!')
 			elif self.result == 'O':
-				print('The winner is O!')
+				print('The winner is O! :v')
 				self.logger.write('The winner is O!')
 			elif self.result == '.':
-				print("It's a tie!")
+				print("It's a tie! :v")
 				self.logger.write('It\'s a tie!')
 			self.initialize_game(False)
 		return self.result
@@ -341,6 +342,10 @@ class Game:
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
+
+		# list for ARD
+		depths_list = []
+
 		value = Game.INITIAL_HEURISTIC_SCORE
 		if max:
 			value = -Game.INITIAL_HEURISTIC_SCORE
@@ -348,11 +353,11 @@ class Game:
 		y = None
 		result = self.is_end()
 		if result == 'X':
-			return -1, x, y
+			return -1, x, y, current_depth
 		elif result == 'O':
-			return 1, x, y
+			return 1, x, y, current_depth
 		elif result == '.':
-			return 0, x, y
+			return 0, x, y, current_depth
 
 		for i in range(0, self.game_size):
 			for j in range(0, self.game_size):
@@ -360,7 +365,9 @@ class Game:
 					if max:
 						self.current_state[i][j] = 'O'
 						if current_depth < max_depth:
-							(v, _, _) = self.minimax(heuristic, max_depth, max=False, current_depth=current_depth + 1)
+							(v, _, _, d) = self.minimax(heuristic, max_depth, max=False, current_depth=current_depth + 1)
+							if d is not None:
+								depths_list.append(d)
 						else:
 							# run heuristic on this intermediate state (get score for move at this position)
 							v = heuristic()
@@ -371,7 +378,9 @@ class Game:
 					else:
 						self.current_state[i][j] = 'X'
 						if current_depth < max_depth:
-							(v, _, _) = self.minimax(heuristic, max_depth, max=True, current_depth=current_depth + 1)
+							(v, _, _, d) = self.minimax(heuristic, max_depth, max=True, current_depth=current_depth + 1)
+							if d is not None:
+								depths_list.append(d)
 						else:
 							# run heuristic on this intermediate state (get score for move at this position)
 							v = heuristic()
@@ -382,13 +391,18 @@ class Game:
 					true_depth = current_depth + 1
 					self.depths.append(true_depth)
 
-					if (current_depth not in self.depth_dictionary.keys()):
+					if true_depth not in self.depth_dictionary.keys():
 						self.depth_dictionary[true_depth] = 1
 					else:
 						self.depth_dictionary[true_depth] += 1
 					
 					self.current_state[i][j] = '.'
-		return value, x, y
+		
+		if len(depths_list) == 0:
+			return value, x, y, current_depth
+		
+		avg_depth_for_node = sum(depths_list) / len(depths_list)
+		return value, x, y, avg_depth_for_node
 
 	def alphabeta(self, heuristic, max_depth, alpha=-2, beta=2, max=False, current_depth=0):
 		# if you've exceeded the time limit, the AI loses
@@ -400,6 +414,10 @@ class Game:
 		# 0  - a tie
 		# 1  - loss for 'X'
 		# We're initially setting it to 2 or -2 as worse than the worst case:
+		
+		# list for ARD
+		depths_list = []
+
 		value = Game.INITIAL_HEURISTIC_SCORE
 		if max:
 			value = -Game.INITIAL_HEURISTIC_SCORE
@@ -407,18 +425,20 @@ class Game:
 		y = None
 		result = self.is_end()
 		if result == 'X':
-			return -1, x, y
+			return -1, x, y, current_depth
 		elif result == 'O':
-			return 1, x, y
+			return 1, x, y, current_depth
 		elif result == '.':
-			return 0, x, y
+			return 0, x, y, current_depth
 		for i in range(0, self.game_size):
 			for j in range(0, self.game_size):
 				if self.current_state[i][j] == '.':
 					if max:
 						self.current_state[i][j] = 'O'
 						if current_depth < max_depth:
-							(v, _, _) = self.alphabeta(heuristic, max_depth, alpha, beta, max=False, current_depth=current_depth+1)
+							(v, _, _, d) = self.alphabeta(heuristic, max_depth, alpha, beta, max=False, current_depth=current_depth+1)
+							if d is not None:
+								depths_list.append(d)
 						else:
 							v = heuristic()
 						if v > value:
@@ -428,7 +448,9 @@ class Game:
 					else:
 						self.current_state[i][j] = 'X'
 						if current_depth < max_depth:
-							(v, _, _) = self.alphabeta(heuristic, max_depth, alpha, beta, max=True, current_depth=current_depth+1)
+							(v, _, _, d) = self.alphabeta(heuristic, max_depth, alpha, beta, max=True, current_depth=current_depth+1)
+							if d is not None:
+								depths_list.append(d)
 						else:
 							v = heuristic()
 						if v < value:
@@ -446,15 +468,20 @@ class Game:
 					self.current_state[i][j] = '.'
 					if max:
 						if value >= beta:
-							return value, x, y
+							return value, x, y, None
 						if value > alpha:
 							alpha = value
 					else:
 						if value <= alpha:
-							return value, x, y
+							return value, x, y, None
 						if value < beta:
 							beta = value
-		return value, x, y
+
+		if len(depths_list) == 0:
+			return value, x, y, current_depth
+		
+		avg_depth_for_node = sum(depths_list) / len(depths_list)
+		return value, x, y, avg_depth_for_node
 
 	def play(self, algo=None, player_x=None, player_o=None, player_x_heuristic=None, player_o_heuristic=None, player_x_max_depth=5, player_o_max_depth=5):
 		if algo is None:
@@ -477,14 +504,14 @@ class Game:
 				self.turn_start_time = start
 				if algo == self.MINIMAX:
 					if self.player_turn == 'X':
-						(_, x, y) = self.minimax(player_x_heuristic, player_x_max_depth, max=False)
+						(_, x, y, ard) = self.minimax(player_x_heuristic, player_x_max_depth, max=False)
 					else:
-						(_, x, y) = self.minimax(player_o_heuristic, player_o_max_depth, max=True)
+						(_, x, y, ard) = self.minimax(player_o_heuristic, player_o_max_depth, max=True)
 				else: # algo == self.ALPHABETA
 					if self.player_turn == 'X':
-						(m, x, y) = self.alphabeta(player_x_heuristic, player_x_max_depth, max=False)
+						(m, x, y, ard) = self.alphabeta(player_x_heuristic, player_x_max_depth, max=False)
 					else:
-						(m, x, y) = self.alphabeta(player_o_heuristic, player_o_max_depth, max=True)
+						(m, x, y, ard) = self.alphabeta(player_o_heuristic, player_o_max_depth, max=True)
 				end = time.time()
 
 			except TimeoutError:
@@ -519,6 +546,9 @@ class Game:
 			self.logger.write(f'iv Average Evaluation Depth (AD) is: {avg_depth}\n')
 			self.depths = []
 
+			# average recursive depth
+			self.logger.write(f'v Average Evaluation Recursive Depth (ARD) is: {ard}\n')
+
 			self.current_state[x][y] = self.player_turn
 			self.switch_player()
 
@@ -545,7 +575,7 @@ def main():
 	# g = Game(recommend=True, game_size=game_size, blocks=blocks, win_length=win_length)
 	try:
 		g = Game(recommend=True, blocks=1, game_size=3)
-		g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h1_num_own_tiles)
+		g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h2_bunched_symbols)
 	finally:
 		g.logger.close()
 	# g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
