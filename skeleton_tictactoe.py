@@ -490,13 +490,23 @@ class Game:
 		avg_depth_for_node = sum(depths_list) / len(depths_list)
 		return value, x, y, avg_depth_for_node
 
-	def play(self, algo=None, player_x=None, player_o=None, player_x_heuristic=None, player_o_heuristic=None, player_x_max_depth=5, player_o_max_depth=5):
+	def play(self, algo=None, player_x=None, player_o=None, player_x_heuristic='h1', player_o_heuristic='h1', player_x_max_depth=5, player_o_max_depth=5):
+		game_metrics = {}
 		if algo is None:
 			algo = self.ALPHABETA
 		if player_x is None:
 			player_x = self.HUMAN
 		if player_o is None:
 			player_o = self.HUMAN
+
+		if player_x_heuristic == 'h1':
+			player_x_heuristic = self.h1_num_own_tiles
+		else:
+			player_x_heuristic = self.h2_bunched_symbols
+		if player_o_heuristic == 'h1':
+			player_o_heuristic = self.h1_num_own_tiles
+		else:
+			player_o_heuristic = self.h2_bunched_symbols
 
 
 		self.logger.write(f'Player 1: {player_x} d={player_x_max_depth} a={algo} e={player_x_heuristic.__name__} \n')
@@ -506,7 +516,15 @@ class Game:
 		
 		while True:
 			self.draw_board()
-			if self.check_end():
+			winner = self.check_end()
+			if winner:
+				game_metrics["winner"] = winner
+				if winner == 'O':
+					game_metrics['winning_heuristic'] = player_x_heuristic.__name__
+				elif winner == 'X':
+					game_metrics['winning_heuristic'] = player_o_heuristic.__name__
+				else:
+					game_metrics['winning_heuristic'] = 'None'
 				break
 			start = time.time()
 			try:
@@ -526,7 +544,7 @@ class Game:
 			except TimeoutError:
 				print("The current AI player ran out of time!")
 				print(self.switch_player() + " wins by default!")
-				return
+				break
 
 			moves_counter += 1
 
@@ -585,6 +603,7 @@ class Game:
 		self.logger.write(f'6(b)iv  Average evaluation depth: {sum(self.depths_memory)/len(self.depths_memory)}\n')
 		self.logger.write(f'6(b)v   Average recursion depth: {sum(self.ard_memory)/len(self.ard_memory)}\n')
 		self.logger.write(f'6(b)vi  Total moves: {moves_counter}\n')
+		return game_metrics
 
 
 def main(choose_options=False):
@@ -609,12 +628,35 @@ def main(choose_options=False):
 				print(f'Win length must be between 3 and {game_size}')
 		try:
 			g = Game(recommend=True, game_size=game_size, blocks=blocks, win_length=win_length)
-			g.play(algo=Game.ALPHABETA, player_x=Game.HUMAN, player_o=Game.HUMAN, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h2_bunched_symbols)
+			g.play(algo=Game.ALPHABETA, player_x=Game.HUMAN, player_o=Game.HUMAN, player_o_heuristic='h1', player_x_heuristic='h2')
 		finally:
 			g.logger.close()
 	else:
-		try:
-			g = Game(recommend=True, blocks=1, game_size=3)
-			g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=g.h1_num_own_tiles, player_x_heuristic=g.h2_bunched_symbols)
-		finally:
-			g.logger.close()
+		# Round parameters
+		num_rounds = 10 # must be even!
+		game_size = 3
+		blocks = 1
+		win_length = 3
+		max_execution_time = 7
+		# player parameters
+		player_o_heuristic = 'h1'
+		player_x_heuristic = 'h1'
+		player_x_max_depth = 7
+		player_o_max_depth = 7
+		algo = Game.ALPHABETA
+		# metrics
+		game_metrics_list = []
+		with open(f'scoreboard-{game_size}{blocks}{win_length}{max_execution_time}.txt', 'w') as round_file:
+			round_file.write(f'Round parameters: game_size: {game_size} blocks: {blocks} win_length: {win_length} max_execution_time: {max_execution_time}\n')
+			if algo == Game.ALPHABETA:
+				algostr = 'AlphaBeta'
+			else:
+				algostr = 'Minimax'
+			round_file.write(f'Player parameters: player_x_max_depth: {player_x_max_depth} player_o_max_depth: {player_o_max_depth} algo: {algostr} player_o_heuristic: {player_o_heuristic} player_x_heuristic: {player_x_heuristic}\n')
+			round_file.write(f'Number of rounds: {num_rounds}\n')
+			for round in range(num_rounds):
+				try:
+					g = Game(recommend=True, blocks=blocks, game_size=game_size, win_length=win_length, max_execution_time=max_execution_time)
+					game_metrics_list.append(g.play(algo=algo, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=player_o_heuristic, player_x_heuristic=player_o_heuristic, player_o_max_depth=player_o_max_depth, player_x_max_depth=player_x_max_depth))
+				finally:
+					g.logger.close()
