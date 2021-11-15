@@ -124,11 +124,15 @@ class Game:
 				if row_value < math.floor(self.game_size / 2):
 					# from left to right
 					for length in range(1, win_length):
+						if (row_value + length) >= self.game_size:
+							continue
 						if game_state_clone[height + length][row_value + length] == 'O':
 							num_tiles += 1
 				else:
 					# from right to left
 					for length in range(1, win_length):
+						if (row_value + length) < 0:
+							continue
 						if game_state_clone[height + length][row_value - length] == 'O':
 							num_tiles += 1
 				h_score += win_length - num_tiles - temp_num_tiles
@@ -190,6 +194,8 @@ class Game:
 				if row_value < math.floor(self.game_size / 2):
 					# from left to right
 					for length in range(1, self.win_length):
+						if (row_value + length) >= self.game_size:
+							continue
 						if game_state_clone[height + length][row_value + length] == 'O':
 							num_tiles += 1
 						if game_state_clone[height + length][row_value + length] == 'X':
@@ -199,6 +205,8 @@ class Game:
 				else:
 					# from right to left
 					for length in range(1, self.win_length):
+						if (row_value + length) < 0:
+							continue
 						if game_state_clone[height + length][row_value - length] == 'O':
 							num_tiles += 1
 						if game_state_clone[height + length][row_value - length] == 'X':
@@ -288,6 +296,8 @@ class Game:
 					if row_value < math.floor(self.game_size / 2):
 						# from left to right
 						for length in range(1, self.win_length):
+							if (row_value + length) >= self.game_size:
+								continue
 							if potential_winner == self.current_state[height + length][row_value + length]:
 								same_count = same_count + 1
 								if same_count == self.win_length:
@@ -295,6 +305,8 @@ class Game:
 					else:
 						# from right to left
 						for length in range(1, self.win_length):
+							if (row_value - length) < 0:
+								continue
 							if potential_winner == self.current_state[height + length][row_value - length]:
 								same_count = same_count + 1
 								if same_count == self.win_length:
@@ -603,6 +615,8 @@ class Game:
 		# 6 End-Game Heuristics
 
 		self.logger.write(f'\n')
+		if len(self.evaluation_time) == 0:
+			self.evaluation_time.append(0)
 		avg_eval_time = sum(self.evaluation_time)/len(self.evaluation_time)
 		self.logger.write(f'6(b)i   Average evaluation time: {avg_eval_time}\n')
 		game_metrics['avg_eval_time'] = avg_eval_time
@@ -620,9 +634,13 @@ class Game:
 					total_depth[depth] += count
 		game_metrics['total_depth'] = total_depth
 		self.logger.write(f'6(b)iii Evaluations by depth: {total_depth}\n')
+		if len(self.depths_memory) == 0:
+			self.depths_memory.append(0)
 		average_eval_depth = sum(self.depths_memory)/len(self.depths_memory)
 		game_metrics['average_eval_depth'] = average_eval_depth
 		self.logger.write(f'6(b)iv  Average evaluation depth: {average_eval_depth}\n')
+		if len(self.ard_memory) == 0:
+			self.ard_memory.append(0)
 		average_recursion_depth = sum(self.ard_memory)/len(self.ard_memory)
 		game_metrics['average_recursion_depth'] = average_recursion_depth
 		self.logger.write(f'6(b)v   Average recursion depth: {average_recursion_depth}\n')
@@ -661,7 +679,7 @@ def main(choose_options=False):
 		num_rounds = 10 # must be even!
 		game_size = 4
 		blocks = 1
-		win_length = 3
+		win_length = 4
 		max_execution_time = 7
 		# player parameters
 		player_o_heuristic = 'h2'
