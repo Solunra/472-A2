@@ -640,7 +640,7 @@ def main(choose_options=False):
 		max_execution_time = 7
 		# player parameters
 		player_o_heuristic = 'h1'
-		player_x_heuristic = 'h1'
+		player_x_heuristic = 'h2'
 		player_x_max_depth = 7
 		player_o_max_depth = 7
 		algo = Game.ALPHABETA
@@ -655,8 +655,20 @@ def main(choose_options=False):
 			round_file.write(f'Player parameters: player_x_max_depth: {player_x_max_depth} player_o_max_depth: {player_o_max_depth} algo: {algostr} player_o_heuristic: {player_o_heuristic} player_x_heuristic: {player_x_heuristic}\n')
 			round_file.write(f'Number of rounds: {num_rounds}\n')
 			for round in range(num_rounds):
+				bucket = player_o_heuristic
+				player_o_heuristic = player_x_heuristic
+				player_x_heuristic = bucket
 				try:
 					g = Game(recommend=True, blocks=blocks, game_size=game_size, win_length=win_length, max_execution_time=max_execution_time)
 					game_metrics_list.append(g.play(algo=algo, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=player_o_heuristic, player_x_heuristic=player_o_heuristic, player_o_max_depth=player_o_max_depth, player_x_max_depth=player_x_max_depth))
 				finally:
 					g.logger.close()
+
+			average_metrics = game_metrics_list[0]
+			# averaging the entries in the dicts
+			for metrics_index in range(1, len(game_metrics_list)):
+				for key,value in game_metrics_list[metrics_index].items():
+					average_metrics[key] += value
+
+			for key, value in average_metrics:
+				average_metrics[key] = value/len(game_metrics_list)
