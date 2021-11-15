@@ -679,7 +679,7 @@ def main(choose_options=False):
 		num_rounds = 10 # must be even!
 		game_size = 4
 		blocks = 1
-		win_length = 4
+		win_length = 3
 		max_execution_time = 7
 		# player parameters
 		player_o_heuristic = 'h2'
