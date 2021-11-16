@@ -12,13 +12,13 @@ class Game:
     INITIAL_HEURISTIC_SCORE = 9999999999999
 
     # n = game_size, b = blocks, s = win_length
-    def __init__(self, recommend=True, game_size=3, blocks=0, win_length=3, max_execution_time=7):
+    def __init__(self, recommend=True, game_size=3, blocks=0, win_length=3, max_execution_time=7, block_positions=None):
         self.turn_start_time = 0
         self.max_execution_time = max_execution_time
         self.game_size = game_size
         self.game_blocks = blocks
         self.win_length = win_length
-        self.logger = open(f'gameTrace-{game_size}{blocks}{win_length}{max_execution_time}.txt', 'w')
+        self.logger = open(f'logs\\gameTrace-{game_size}{blocks}{win_length}{max_execution_time}.txt', 'w')
         self.initialize_game()
         self.recommend = recommend
         self.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
@@ -29,6 +29,7 @@ class Game:
         self.depth_dictionary_memory = []
         self.evaluation_time = []
         self.ard_memory = []
+        self.block_positions = block_positions
 
     def initialize_game(self, is_first_init=True):
         game = []
@@ -40,10 +41,14 @@ class Game:
 
         # Generate each blocks
         list_of_blocks = []
-        while len(list_of_blocks) != self.game_blocks:
-            new_position = (random.randint(0, self.game_size - 1), random.randint(0, self.game_size - 1))
-            if new_position not in list_of_blocks:
-                list_of_blocks.append(new_position)
+        if self.block_positions is None:
+            while len(list_of_blocks) != self.game_blocks:
+                new_position = (random.randint(0, self.game_size - 1), random.randint(0, self.game_size - 1))
+                if new_position not in list_of_blocks:
+                    list_of_blocks.append(new_position)
+        else:
+            list_of_blocks = self.block_positions
+
         # Place each blocks
         for x, y in list_of_blocks:
             self.current_state[x][y] = '*'
@@ -655,8 +660,7 @@ class Game:
 
 def main(choose_options=False, num_rounds=10, game_size=4, blocks=1, win_length=3, max_execution_time=20,
          player_o_heuristic='h1', player_x_heuristic='h2', player_x_max_depth=7, player_o_max_depth=7,
-         algo=Game.ALPHABETA):
-    # Uncomment when needed
+         algo=Game.ALPHABETA, block_positions=None):
     if choose_options:
         game_size = 0
         while game_size < 3 or game_size > 10:
@@ -683,7 +687,7 @@ def main(choose_options=False, num_rounds=10, game_size=4, blocks=1, win_length=
             g.logger.close()
     else:
         game_metrics_list = []
-        with open(f'scoreboard-{game_size}{blocks}{win_length}{max_execution_time}.txt', 'w') as round_file:
+        with open(f'logs\\scoreboard-{game_size}{blocks}{win_length}{max_execution_time}.txt', 'w') as round_file:
             round_file.write(
                 f'Round parameters: game_size: {game_size} blocks: {blocks} win_length: {win_length} max_execution_time: {max_execution_time}\n')
             if algo == Game.ALPHABETA:
@@ -698,7 +702,8 @@ def main(choose_options=False, num_rounds=10, game_size=4, blocks=1, win_length=
                 player_o_heuristic = player_x_heuristic
                 player_x_heuristic = bucket
                 try:
-                    g = Game(recommend=True, blocks=blocks, game_size=game_size, win_length=win_length,
+                    g = Game(recommend=True, blocks=blocks, block_positions=block_positions, game_size=game_size,
+                             win_length=win_length,
                              max_execution_time=max_execution_time)
                     game_metrics_list.append(
                         g.play(algo=algo, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=player_o_heuristic,

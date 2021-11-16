@@ -1,0 +1,3 @@
+Round parameters: game_size: 4 blocks: 4 win_length: 3 max_execution_time: 5
+Player parameters: player_x_max_depth: 6 player_o_max_depth: 6 algo: Minimax player_o_heuristic: h1 player_x_heuristic: h2
+Number of rounds: 10
