@@ -1,3 +1,20 @@
 Round parameters: game_size: 4 blocks: 4 win_length: 3 max_execution_time: 5
-Player parameters: player_x_max_depth: 6 player_o_max_depth: 6 algo: Minimax player_o_heuristic: h1 player_x_heuristic: h2
+Player parameters: player_x_max_depth: 6 player_o_max_depth: 6 algo: AlphaBeta player_o_heuristic: h1 player_x_heuristic: h2
 Number of rounds: 10
+o_wins: 0.0%
+x_wins: 100.0%
+h1_wins: 50.0%
+h2_wins: 50.0%
+avg_eval_time: 0.05881797017694329
+sum_of_all_searched_state: 363180.5
+total_depth:
+7: 225568.0
+6: 86861.0
+5: 36967.5
+4: 9090.0
+3: 3639.0
+2: 708.5
+1: 346.5
+average_eval_depth: 5.4398670660356885
+average_recursion_depth: 4.376816304818785
+moves_counter: 7.0

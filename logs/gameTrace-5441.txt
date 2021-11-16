@@ -1,0 +1,773 @@
+Blocks:[(2, 2), (2, 3), (4, 4), (0, 0)]
+n = 5 b = 4 s = 4 t = 1
+Player 1: 3 d=2 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDE
+0 *....
+1 .....
+2 ..*..
+3 ..*..
+4 ....*
+
+Player X under AI control plays: x = C, y = 1
+i Evaluation time: 0.0579989s
+ii Heuristics evaluations: 1766
+iii Evaluations by depth: {3: 1547, 2: 198, 1: 21}
+iv Average Evaluation Depth (AD) is: 2.8640996602491504
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 *....
+1 ..X..
+2 ..*..
+3 ..*..
+4 ....*
+
+
+6(b)i   Average evaluation time: 0.0579988956451416
+6(b)ii  Total heuristic evaluations: 1766
+6(b)iii Evaluations by depth: {3: 1547, 2: 198, 1: 21}
+6(b)iv  Average evaluation depth: 2.8640996602491504
+6(b)v   Average recursion depth: 2.0
+6(b)vi  Total moves: 1
+Player 1: 3 d=2 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDE
+0 *X...
+1 OOX..
+2 O.*X.
+3 ..*..
+4 X...*
+
+Player X under AI control plays: x = E, y = 3
+i Evaluation time: 0.010999s
+ii Heuristics evaluations: 198992
+iii Evaluations by depth: {7: 161188, 6: 31910, 5: 4756, 4: 853, 3: 246, 2: 25, 1: 14}
+iv Average Evaluation Depth (AD) is: 6.772985848677334
+v Average Evaluation Recursive Depth (ARD) is: 1.9285714285714286
+  ABCDE
+0 *X...
+1 OOX..
+2 O.*X.
+3 ..*.X
+4 X...*
+
+The winner is X!
+6(b)i   Average evaluation time: 0.03449892997741699
+6(b)ii  Total heuristic evaluations: 200758
+6(b)iii Evaluations by depth: {3: 1793, 2: 223, 1: 35, 7: 161188, 6: 31910, 5: 4756, 4: 853}
+6(b)iv  Average evaluation depth: 4.818542754463242
+6(b)v   Average recursion depth: 1.9642857142857144
+6(b)vi  Total moves: 1
+Player 1: 3 d=2 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDE
+0 .....
+1 .....
+2 ..*..
+3 .*...
+4 .*..*
+
+Player X under AI control plays: x = D, y = 2
+i Evaluation time: 0.039999s
+ii Heuristics evaluations: 2265
+iii Evaluations by depth: {3: 1986, 2: 258, 1: 21}
+iv Average Evaluation Depth (AD) is: 2.8675496688741724
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 .....
+1 .....
+2 ..*X.
+3 .*...
+4 .*..*
+
+
+6(b)i   Average evaluation time: 0.036332289377848305
+6(b)ii  Total heuristic evaluations: 203023
+6(b)iii Evaluations by depth: {3: 3779, 2: 481, 1: 56, 7: 161188, 6: 31910, 5: 4756, 4: 853}
+6(b)iv  Average evaluation depth: 4.168211725933552
+6(b)v   Average recursion depth: 1.9761904761904763
+6(b)vi  Total moves: 1
+Player 1: 3 d=2 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDE
+0 OO...
+1 ...X.
+2 ..*X.
+3 .*...
+4 .*..*
+
+Player X under AI control plays: x = A, y = 1
+i Evaluation time: 0.0089998s
+ii Heuristics evaluations: 175619
+iii Evaluations by depth: {7: 140392, 6: 29620, 5: 4421, 4: 798, 3: 342, 2: 29, 1: 17}
+iv Average Evaluation Depth (AD) is: 6.758163979979387
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OO...
+1 X..X.
+2 ..*X.
+3 .*...
+4 .*..*
+
+Player O under AI control plays: x = D, y = 0
+i Evaluation time: 0.684999s
+ii Heuristics evaluations: 192040
+iii Evaluations by depth: {7: 82269, 6: 91918, 5: 13305, 4: 3945, 3: 510, 2: 83, 1: 10}
+iv Average Evaluation Depth (AD) is: 6.308071235159342
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 OO.O.
+1 X..X.
+2 ..*X.
+3 .*...
+4 .*..*
+
+Player X under AI control plays: x = A, y = 2
+i Evaluation time: 0.0019982s
+ii Heuristics evaluations: 225
+iii Evaluations by depth: {3: 195, 2: 15, 1: 15}
+iv Average Evaluation Depth (AD) is: 2.8
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OO.O.
+1 X..X.
+2 X.*X.
+3 .*...
+4 .*..*
+
+Player O under AI control plays: x = A, y = 3
+i Evaluation time: 0.029s
+ii Heuristics evaluations: 7676
+iii Evaluations by depth: {5: 646, 7: 3191, 6: 3554, 4: 240, 3: 31, 2: 13, 1: 1}
+iv Average Evaluation Depth (AD) is: 6.249478895257947
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 OO.O.
+1 X..X.
+2 X.*X.
+3 O*...
+4 .*..*
+
+Player X under AI control plays: x = A, y = 4
+i Evaluation time: 0.0029979s
+ii Heuristics evaluations: 169
+iii Evaluations by depth: {3: 143, 2: 13, 1: 13}
+iv Average Evaluation Depth (AD) is: 2.769230769230769
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OO.O.
+1 X..X.
+2 X.*X.
+3 O*...
+4 X*..*
+
+Player O under AI control plays: x = B, y = 1
+i Evaluation time: 0.013001s
+ii Heuristics evaluations: 2896
+iii Evaluations by depth: {3: 22, 7: 1117, 6: 1209, 5: 389, 4: 147, 2: 11, 1: 1}
+iv Average Evaluation Depth (AD) is: 6.110151933701657
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 OO.O.
+1 XO.X.
+2 X.*X.
+3 O*...
+4 X*..*
+
+Player X under AI control plays: x = B, y = 2
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 122
+iii Evaluations by depth: {2: 12, 3: 99, 1: 11}
+iv Average Evaluation Depth (AD) is: 2.721311475409836
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OO.O.
+1 XO.X.
+2 XX*X.
+3 O*...
+4 X*..*
+
+Player O under AI control plays: x = C, y = 1
+i Evaluation time: 0.0029981s
+ii Heuristics evaluations: 984
+iii Evaluations by depth: {1: 2, 7: 363, 6: 377, 5: 137, 4: 75, 3: 21, 2: 9}
+iv Average Evaluation Depth (AD) is: 5.966463414634147
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 OO.O.
+1 XOOX.
+2 XX*X.
+3 O*...
+4 X*..*
+
+Player X under AI control plays: x = C, y = 0
+i Evaluation time: 0.0009999s
+ii Heuristics evaluations: 89
+iii Evaluations by depth: {3: 63, 2: 17, 1: 9}
+iv Average Evaluation Depth (AD) is: 2.606741573033708
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OOXO.
+1 XOOX.
+2 XX*X.
+3 O*...
+4 X*..*
+
+Player O under AI control plays: x = C, y = 3
+i Evaluation time: 0.0009968s
+ii Heuristics evaluations: 363
+iii Evaluations by depth: {7: 129, 6: 129, 5: 43, 4: 45, 3: 9, 2: 7, 1: 1}
+iv Average Evaluation Depth (AD) is: 5.823691460055096
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 OOXO.
+1 XOOX.
+2 XX*X.
+3 O*O..
+4 X*..*
+
+Player X under AI control plays: x = C, y = 4
+i Evaluation time: 0.0020001s
+ii Heuristics evaluations: 49
+iii Evaluations by depth: {3: 35, 2: 7, 1: 7}
+iv Average Evaluation Depth (AD) is: 2.5714285714285716
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OOXO.
+1 XOOX.
+2 XX*X.
+3 O*O..
+4 X*X.*
+
+Player O under AI control plays: x = D, y = 3
+i Evaluation time: 0.000999s
+ii Heuristics evaluations: 158
+iii Evaluations by depth: {6: 38, 5: 38, 4: 38, 3: 28, 2: 10, 1: 6}
+iv Average Evaluation Depth (AD) is: 4.30379746835443
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 OOXO.
+1 XOOX.
+2 XX*X.
+3 O*OO.
+4 X*X.*
+
+Player X under AI control plays: x = D, y = 4
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 25
+iii Evaluations by depth: {3: 15, 2: 5, 1: 5}
+iv Average Evaluation Depth (AD) is: 2.4
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OOXO.
+1 XOOX.
+2 XX*X.
+3 O*OO.
+4 X*XX*
+
+Player O under AI control plays: x = E, y = 0
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 30
+iii Evaluations by depth: {4: 10, 3: 10, 2: 6, 1: 4}
+iv Average Evaluation Depth (AD) is: 2.8666666666666667
+v Average Evaluation Recursive Depth (ARD) is: 4.0
+  ABCDE
+0 OOXOO
+1 XOOX.
+2 XX*X.
+3 O*OO.
+4 X*XX*
+
+Player X under AI control plays: x = E, y = 2
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 9
+iii Evaluations by depth: {3: 3, 2: 3, 1: 3}
+iv Average Evaluation Depth (AD) is: 2.0
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OOXOO
+1 XOOX.
+2 XX*XX
+3 O*OO.
+4 X*XX*
+
+Player O under AI control plays: x = E, y = 1
+i Evaluation time: 0.0010011s
+ii Heuristics evaluations: 4
+iii Evaluations by depth: {2: 2, 1: 2}
+iv Average Evaluation Depth (AD) is: 1.5
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OOXOO
+1 XOOXO
+2 XX*XX
+3 O*OO.
+4 X*XX*
+
+Player X under AI control plays: x = E, y = 3
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 1
+iii Evaluations by depth: {1: 1}
+iv Average Evaluation Depth (AD) is: 1.0
+v Average Evaluation Recursive Depth (ARD) is: 1.0
+  ABCDE
+0 OOXOO
+1 XOOXO
+2 XX*XX
+3 O*OOX
+4 X*XX*
+
+It's a tie!
+6(b)i   Average evaluation time: 0.04294939041137695
+6(b)ii  Total heuristic evaluations: 583482
+6(b)iii Evaluations by depth: {3: 5305, 2: 723, 1: 164, 7: 388649, 6: 158755, 5: 23735, 4: 6151}
+6(b)iv  Average evaluation depth: 3.86299163103561
+6(b)v   Average recursion depth: 2.9464285714285716
+6(b)vi  Total moves: 17
+Player 1: 3 d=2 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDE
+0 *....
+1 ...*.
+2 *....
+3 ....*
+4 .....
+
+Player X under AI control plays: x = B, y = 2
+i Evaluation time: 0.017998s
+ii Heuristics evaluations: 2783
+iii Evaluations by depth: {3: 2550, 2: 212, 1: 21}
+iv Average Evaluation Depth (AD) is: 2.9087315846209125
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 *....
+1 ...*.
+2 *X...
+3 ....*
+4 .....
+
+
+6(b)i   Average evaluation time: 0.041761228016444614
+6(b)ii  Total heuristic evaluations: 586265
+6(b)iii Evaluations by depth: {3: 7855, 2: 935, 1: 185, 7: 388649, 6: 158755, 5: 23735, 4: 6151}
+6(b)iv  Average evaluation depth: 3.817550676444434
+6(b)v   Average recursion depth: 2.9013605442176873
+6(b)vi  Total moves: 1
+Player 1: 3 d=2 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDE
+0 *....
+1 X.O*.
+2 *X...
+3 O.O.*
+4 ..X..
+
+Player X under AI control plays: x = A, y = 4
+i Evaluation time: 0.001997s
+ii Heuristics evaluations: 221607
+iii Evaluations by depth: {7: 178750, 6: 36791, 5: 4812, 4: 911, 3: 293, 2: 34, 1: 16}
+iv Average Evaluation Depth (AD) is: 6.771731037376978
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 *....
+1 X.O*.
+2 *X...
+3 O.O.*
+4 X.X..
+
+Player O under AI control plays: x = B, y = 0
+i Evaluation time: 0.0410011s
+ii Heuristics evaluations: 5766
+iii Evaluations by depth: {7: 2435, 6: 2681, 5: 422, 4: 192, 3: 22, 2: 13, 1: 1}
+iv Average Evaluation Depth (AD) is: 6.261186264308012
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 *O...
+1 X.O*.
+2 *X...
+3 O.O.*
+4 X.X..
+
+Player X under AI control plays: x = B, y = 1
+i Evaluation time: 0.000999s
+ii Heuristics evaluations: 169
+iii Evaluations by depth: {3: 143, 2: 13, 1: 13}
+iv Average Evaluation Depth (AD) is: 2.769230769230769
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 *O...
+1 XXO*.
+2 *X...
+3 O.O.*
+4 X.X..
+
+Player O under AI control plays: x = B, y = 3
+i Evaluation time: 0.0219979s
+ii Heuristics evaluations: 2276
+iii Evaluations by depth: {7: 947, 6: 993, 5: 185, 4: 123, 3: 16, 2: 11, 1: 1}
+iv Average Evaluation Depth (AD) is: 6.184094903339192
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 *O...
+1 XXO*.
+2 *X...
+3 OOO.*
+4 X.X..
+
+Player X under AI control plays: x = B, y = 4
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 121
+iii Evaluations by depth: {3: 99, 2: 11, 1: 11}
+iv Average Evaluation Depth (AD) is: 2.727272727272727
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 *O...
+1 XXO*.
+2 *X...
+3 OOO.*
+4 XXX..
+
+Player O under AI control plays: x = D, y = 4
+i Evaluation time: 0.0170012s
+ii Heuristics evaluations: 3459
+iii Evaluations by depth: {5: 458, 7: 1260, 6: 1353, 4: 269, 3: 80, 2: 33, 1: 6}
+iv Average Evaluation Depth (AD) is: 5.9601040763226365
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 *O...
+1 XXO*.
+2 *X...
+3 OOO.*
+4 XXXO.
+
+Player X under AI control plays: x = C, y = 0
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 81
+iii Evaluations by depth: {3: 63, 2: 9, 1: 9}
+iv Average Evaluation Depth (AD) is: 2.6666666666666665
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 *OX..
+1 XXO*.
+2 *X...
+3 OOO.*
+4 XXXO.
+
+Player O under AI control plays: x = C, y = 2
+i Evaluation time: 0.0019979s
+ii Heuristics evaluations: 307
+iii Evaluations by depth: {7: 105, 6: 105, 5: 47, 4: 35, 3: 7, 2: 7, 1: 1}
+iv Average Evaluation Depth (AD) is: 5.785016286644951
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 *OX..
+1 XXO*.
+2 *XO..
+3 OOO.*
+4 XXXO.
+
+Player X under AI control plays: x = D, y = 0
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 49
+iii Evaluations by depth: {3: 35, 2: 7, 1: 7}
+iv Average Evaluation Depth (AD) is: 2.5714285714285716
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 *OXX.
+1 XXO*.
+2 *XO..
+3 OOO.*
+4 XXXO.
+
+Player O under AI control plays: x = D, y = 3
+i Evaluation time: 0.000999s
+ii Heuristics evaluations: 125
+iii Evaluations by depth: {6: 34, 5: 34, 4: 18, 3: 24, 2: 9, 1: 6}
+iv Average Evaluation Depth (AD) is: 4.336
+v Average Evaluation Recursive Depth (ARD) is: 4.266666666666667
+  ABCDE
+0 *OXX.
+1 XXO*.
+2 *XO..
+3 OOOO*
+4 XXXO.
+
+The winner is O!
+6(b)i   Average evaluation time: 0.03106383354433121
+6(b)ii  Total heuristic evaluations: 820225
+6(b)iii Evaluations by depth: {3: 8637, 2: 1082, 1: 256, 7: 572146, 6: 200712, 5: 29693, 4: 7699}
+6(b)iv  Average evaluation depth: 4.071009532513665
+6(b)v   Average recursion depth: 3.070814132104455
+6(b)vi  Total moves: 10
+Player 1: 3 d=2 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDE
+0 .....
+1 ....*
+2 .....
+3 .*...
+4 .*.*.
+
+Player X under AI control plays: x = C, y = 2
+i Evaluation time: 0.026s
+ii Heuristics evaluations: 2378
+iii Evaluations by depth: {3: 2106, 2: 251, 1: 21}
+iv Average Evaluation Depth (AD) is: 2.8767872161480237
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 .....
+1 ....*
+2 ..X..
+3 .*...
+4 .*.*.
+
+
+6(b)i   Average evaluation time: 0.0309055894613266
+6(b)ii  Total heuristic evaluations: 822603
+6(b)iii Evaluations by depth: {3: 10743, 2: 1333, 1: 277, 7: 572146, 6: 200712, 5: 29693, 4: 7699}
+6(b)iv  Average evaluation depth: 4.033690085127239
+6(b)v   Average recursion depth: 3.0373511904761905
+6(b)vi  Total moves: 1
+Player 1: 3 d=2 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDE
+0 O...X
+1 O.X.*
+2 ..X..
+3 .*O..
+4 X*.*.
+
+Player X under AI control plays: x = A, y = 2
+i Evaluation time: 0.0019979s
+ii Heuristics evaluations: 220740
+iii Evaluations by depth: {7: 188097, 6: 27805, 5: 4145, 4: 447, 3: 215, 2: 17, 1: 14}
+iv Average Evaluation Depth (AD) is: 6.825745220621545
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 O...X
+1 O.X.*
+2 X.X..
+3 .*O..
+4 X*.*.
+
+Player O under AI control plays: x = A, y = 3
+i Evaluation time: 0.0162621s
+ii Heuristics evaluations: 5072
+iii Evaluations by depth: {7: 2121, 6: 2349, 5: 387, 4: 181, 3: 21, 2: 12, 1: 1}
+iv Average Evaluation Depth (AD) is: 6.247634069400631
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 O...X
+1 O.X.*
+2 X.X..
+3 O*O..
+4 X*.*.
+
+Player X under AI control plays: x = B, y = 0
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 144
+iii Evaluations by depth: {3: 120, 2: 12, 1: 12}
+iv Average Evaluation Depth (AD) is: 2.75
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OX..X
+1 O.X.*
+2 X.X..
+3 O*O..
+4 X*.*.
+
+Player O under AI control plays: x = B, y = 2
+i Evaluation time: 0.0199971s
+ii Heuristics evaluations: 5046
+iii Evaluations by depth: {7: 1928, 6: 2296, 5: 523, 4: 230, 3: 47, 2: 20, 1: 2}
+iv Average Evaluation Depth (AD) is: 6.141498216409037
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 OX..X
+1 O.X.*
+2 XOX..
+3 O*O..
+4 X*.*.
+
+Player X under AI control plays: x = C, y = 0
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 100
+iii Evaluations by depth: {3: 80, 2: 10, 1: 10}
+iv Average Evaluation Depth (AD) is: 2.7
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OXX.X
+1 O.X.*
+2 XOX..
+3 O*O..
+4 X*.*.
+
+Player O under AI control plays: x = D, y = 0
+i Evaluation time: 0.0069981s
+ii Heuristics evaluations: 1757
+iii Evaluations by depth: {7: 624, 6: 742, 5: 216, 4: 130, 3: 24, 2: 18, 1: 3}
+iv Average Evaluation Depth (AD) is: 5.993739328400683
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 OXXOX
+1 O.X.*
+2 XOX..
+3 O*O..
+4 X*.*.
+
+Player X under AI control plays: x = C, y = 4
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 64
+iii Evaluations by depth: {3: 48, 2: 8, 1: 8}
+iv Average Evaluation Depth (AD) is: 2.625
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OXXOX
+1 O.X.*
+2 XOX..
+3 O*O..
+4 X*X*.
+
+Player O under AI control plays: x = B, y = 1
+i Evaluation time: 0.0019999s
+ii Heuristics evaluations: 256
+iii Evaluations by depth: {7: 73, 6: 84, 5: 44, 4: 38, 3: 10, 2: 6, 1: 1}
+iv Average Evaluation Depth (AD) is: 5.5859375
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDE
+0 OXXOX
+1 OOX.*
+2 XOX..
+3 O*O..
+4 X*X*.
+
+Player X under AI control plays: x = D, y = 1
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 36
+iii Evaluations by depth: {3: 24, 2: 6, 1: 6}
+iv Average Evaluation Depth (AD) is: 2.5
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OXXOX
+1 OOXX*
+2 XOX..
+3 O*O..
+4 X*X*.
+
+Player O under AI control plays: x = D, y = 2
+i Evaluation time: 0.000998s
+ii Heuristics evaluations: 73
+iii Evaluations by depth: {5: 20, 4: 22, 3: 18, 2: 8, 1: 5}
+iv Average Evaluation Depth (AD) is: 3.6027397260273974
+v Average Evaluation Recursive Depth (ARD) is: 4.866666666666667
+  ABCDE
+0 OXXOX
+1 OOXX*
+2 XOXO.
+3 O*O..
+4 X*X*.
+
+Player X under AI control plays: x = E, y = 2
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 16
+iii Evaluations by depth: {3: 8, 2: 4, 1: 4}
+iv Average Evaluation Depth (AD) is: 2.25
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OXXOX
+1 OOXX*
+2 XOXOX
+3 O*O..
+4 X*X*.
+
+Player O under AI control plays: x = D, y = 3
+i Evaluation time: 0.000999s
+ii Heuristics evaluations: 11
+iii Evaluations by depth: {3: 4, 2: 4, 1: 3}
+iv Average Evaluation Depth (AD) is: 2.090909090909091
+v Average Evaluation Recursive Depth (ARD) is: 3.0
+  ABCDE
+0 OXXOX
+1 OOXX*
+2 XOXOX
+3 O*OO.
+4 X*X*.
+
+Player X under AI control plays: x = E, y = 3
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 4
+iii Evaluations by depth: {2: 2, 1: 2}
+iv Average Evaluation Depth (AD) is: 1.5
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 OXXOX
+1 OOXX*
+2 XOXOX
+3 O*OOX
+4 X*X*.
+
+Player O under AI control plays: x = E, y = 4
+i Evaluation time: 0.0s
+ii Heuristics evaluations: 1
+iii Evaluations by depth: {1: 1}
+iv Average Evaluation Depth (AD) is: 1.0
+v Average Evaluation Recursive Depth (ARD) is: 1.0
+  ABCDE
+0 OXXOX
+1 OOXX*
+2 XOXOX
+3 O*OOX
+4 X*X*O
+
+It's a tie!
+6(b)i   Average evaluation time: 0.022570236869480297
+6(b)ii  Total heuristic evaluations: 1055923
+6(b)iii Evaluations by depth: {3: 11362, 2: 1460, 1: 349, 7: 764989, 6: 233988, 5: 35028, 4: 8747}
+6(b)iv  Average evaluation depth: 3.932419258170435
+6(b)v   Average recursion depth: 3.044824016563147
+6(b)vi  Total moves: 14
+Player 1: 3 d=2 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDE
+0 .....
+1 ..*..
+2 .*..*
+3 ....*
+4 .....
+
+Player X under AI control plays: x = D, y = 1
+i Evaluation time: 0.0249989s
+ii Heuristics evaluations: 2476
+iii Evaluations by depth: {3: 2205, 2: 250, 1: 21}
+iv Average Evaluation Depth (AD) is: 2.8820678513731823
+v Average Evaluation Recursive Depth (ARD) is: 2.0
+  ABCDE
+0 .....
+1 ..*X.
+2 .*..*
+3 ....*
+4 .....
+
+
+6(b)i   Average evaluation time: 0.022621910622779358
+6(b)ii  Total heuristic evaluations: 1058399
+6(b)iii Evaluations by depth: {3: 13567, 2: 1710, 1: 370, 7: 764989, 6: 233988, 5: 35028, 4: 8747}
+6(b)iv  Average evaluation depth: 3.9100713558981535
+6(b)v   Average recursion depth: 3.0225937183383995
+6(b)vi  Total moves: 1
+Player 1: 3 d=2 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDE
+0 O..X.
+1 ..*X.
+2 .*.X*
+3 .O.X*
+4 ..O..
+
+The winner is X!
+6(b)i   Average evaluation time: 0.022621910622779358
+6(b)ii  Total heuristic evaluations: 1058399
+6(b)iii Evaluations by depth: {3: 13567, 2: 1710, 1: 370, 7: 764989, 6: 233988, 5: 35028, 4: 8747}
+6(b)iv  Average evaluation depth: 3.9100713558981535
+6(b)v   Average recursion depth: 3.0225937183383995
+6(b)vi  Total moves: 0

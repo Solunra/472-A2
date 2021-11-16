@@ -1,0 +1,240 @@
+Blocks:[(6, 4), (7, 2), (6, 3), (5, 2), (3, 7), (3, 0)]
+n = 8 b = 6 s = 5 t = 5
+Player 1: 3 d=6 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDEFGH
+0 ...*....
+1 ........
+2 .....*.*
+3 ......*.
+4 ......*.
+5 ........
+6 ........
+7 ...*....
+
+
+6(b)i   Average evaluation time: 0.0
+6(b)ii  Total heuristic evaluations: 0
+6(b)iii Evaluations by depth: {}
+6(b)iv  Average evaluation depth: 0.0
+6(b)v   Average recursion depth: 0.0
+6(b)vi  Total moves: 0
+Player 1: 3 d=6 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDEFGH
+0 X..*....
+1 O.......
+2 .....*.*
+3 ......*X
+4 XO....*.
+5 ........
+6 O.......
+7 ...*....
+
+Player O under AI control plays: x = A, y = 2
+i Evaluation time: 1.2771502s
+ii Heuristics evaluations: 700036
+iii Evaluations by depth: {7: 533604, 6: 159632, 5: 4106, 4: 2589, 3: 53, 2: 51, 1: 1}
+iv Average Evaluation Depth (AD) is: 6.748464364689816
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDEFGH
+0 X..*....
+1 O.......
+2 O....*.*
+3 ......*X
+4 XO....*.
+5 ........
+6 O.......
+7 ...*....
+
+
+6(b)i   Average evaluation time: 0.6385750770568848
+6(b)ii  Total heuristic evaluations: 700036
+6(b)iii Evaluations by depth: {7: 533604, 6: 159632, 5: 4106, 4: 2589, 3: 53, 2: 51, 1: 1}
+6(b)iv  Average evaluation depth: 3.374232182344908
+6(b)v   Average recursion depth: 2.5
+6(b)vi  Total moves: 1
+Player 1: 3 d=6 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDEFGH
+0 X..*....
+1 O.......
+2 O....*.*
+3 O...XX*X
+4 XO....*.
+5 O.......
+6 OX......
+7 ...*....
+
+
+6(b)i   Average evaluation time: 0.6385750770568848
+6(b)ii  Total heuristic evaluations: 700036
+6(b)iii Evaluations by depth: {7: 533604, 6: 159632, 5: 4106, 4: 2589, 3: 53, 2: 51, 1: 1}
+6(b)iv  Average evaluation depth: 3.374232182344908
+6(b)v   Average recursion depth: 2.5
+6(b)vi  Total moves: 0
+Player 1: 3 d=6 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDEFGH
+0 XX.*....
+1 OX......
+2 O....*.*
+3 O..OXX*X
+4 XO....*.
+5 OX.O....
+6 OX......
+7 O..*....
+
+
+6(b)i   Average evaluation time: 0.6385750770568848
+6(b)ii  Total heuristic evaluations: 700036
+6(b)iii Evaluations by depth: {7: 533604, 6: 159632, 5: 4106, 4: 2589, 3: 53, 2: 51, 1: 1}
+6(b)iv  Average evaluation depth: 3.374232182344908
+6(b)v   Average recursion depth: 2.5
+6(b)vi  Total moves: 0
+Player 1: 3 d=6 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDEFGH
+0 XX.*....
+1 OX......
+2 OO..X*.*
+3 OO.OXX*X
+4 XO....*.
+5 OX.O....
+6 OX...XX.
+7 O..*....
+
+
+6(b)i   Average evaluation time: 0.6385750770568848
+6(b)ii  Total heuristic evaluations: 700036
+6(b)iii Evaluations by depth: {7: 533604, 6: 159632, 5: 4106, 4: 2589, 3: 53, 2: 51, 1: 1}
+6(b)iv  Average evaluation depth: 3.374232182344908
+6(b)v   Average recursion depth: 2.5
+6(b)vi  Total moves: 0
+Player 1: 3 d=6 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDEFGH
+0 XX.*X...
+1 OXX.....
+2 OOO.X*.*
+3 OOXOXX*X
+4 XO....*.
+5 OX.O....
+6 OX...XX.
+7 OO.*O...
+
+
+6(b)i   Average evaluation time: 0.6385750770568848
+6(b)ii  Total heuristic evaluations: 700036
+6(b)iii Evaluations by depth: {7: 533604, 6: 159632, 5: 4106, 4: 2589, 3: 53, 2: 51, 1: 1}
+6(b)iv  Average evaluation depth: 3.374232182344908
+6(b)v   Average recursion depth: 2.5
+6(b)vi  Total moves: 0
+Player 1: 3 d=6 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDEFGH
+0 XXO*XX..
+1 OXX.....
+2 OOO.X*.*
+3 OOXOXX*X
+4 XOO...*.
+5 OX.O....
+6 OX.X.XX.
+7 OO.*OX..
+
+
+6(b)i   Average evaluation time: 0.6385750770568848
+6(b)ii  Total heuristic evaluations: 700036
+6(b)iii Evaluations by depth: {7: 533604, 6: 159632, 5: 4106, 4: 2589, 3: 53, 2: 51, 1: 1}
+6(b)iv  Average evaluation depth: 3.374232182344908
+6(b)v   Average recursion depth: 2.5
+6(b)vi  Total moves: 0
+Player 1: 3 d=6 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDEFGH
+0 XXO*XX..
+1 OXXOO...
+2 OOO.X*.*
+3 OOXOXX*X
+4 XOOX..*.
+5 OX.OX...
+6 OXXX.XX.
+7 OOO*OX..
+
+Player X under AI control plays: x = E, y = 6
+i Evaluation time: 0.178s
+ii Heuristics evaluations: 4085314
+iii Evaluations by depth: {7: 3718764, 6: 249602, 5: 107324, 4: 7192, 3: 2249, 2: 130, 1: 53}
+iv Average Evaluation Depth (AD) is: 6.878640907406383
+v Average Evaluation Recursive Depth (ARD) is: 4.521212651727358
+  ABCDEFGH
+0 XXO*XX..
+1 OXXOO...
+2 OOO.X*.*
+3 OOXOXX*X
+4 XOOX..*.
+5 OX.OX...
+6 OXXXXXX.
+7 OOO*OX..
+
+The winner is X!
+6(b)i   Average evaluation time: 0.4850500424702962
+6(b)ii  Total heuristic evaluations: 4785350
+6(b)iii Evaluations by depth: {7: 4252368, 6: 409234, 5: 111430, 4: 9781, 3: 2302, 2: 181, 1: 54}
+6(b)iv  Average evaluation depth: 4.542368424032066
+6(b)v   Average recursion depth: 3.1737375505757854
+6(b)vi  Total moves: 1
+Player 1: 3 d=6 a=1 e=h2_bunched_symbols 
+Player 2: 3 d=6 a=1 e=h2_bunched_symbols 
+  ABCDEFGH
+0 ........
+1 *......*
+2 *.*.....
+3 ........
+4 ........
+5 ...*....
+6 .*......
+7 ........
+
+
+6(b)i   Average evaluation time: 0.4850500424702962
+6(b)ii  Total heuristic evaluations: 4785350
+6(b)iii Evaluations by depth: {7: 4252368, 6: 409234, 5: 111430, 4: 9781, 3: 2302, 2: 181, 1: 54}
+6(b)iv  Average evaluation depth: 4.542368424032066
+6(b)v   Average recursion depth: 3.1737375505757854
+6(b)vi  Total moves: 0
+Player 1: 3 d=6 a=1 e=h1_num_own_tiles 
+Player 2: 3 d=6 a=1 e=h1_num_own_tiles 
+  ABCDEFGH
+0 XX......
+1 *......*
+2 *X*.....
+3 O.......
+4 ........
+5 .O.*....
+6 .*......
+7 ........
+
+Player O under AI control plays: x = A, y = 4
+i Evaluation time: 1.3759992s
+ii Heuristics evaluations: 723412
+iii Evaluations by depth: {7: 536122, 6: 179327, 5: 5107, 4: 2747, 3: 56, 2: 52, 1: 1}
+iv Average Evaluation Depth (AD) is: 6.725921051904033
+v Average Evaluation Recursive Depth (ARD) is: 5.0
+  ABCDEFGH
+0 XX......
+1 *......*
+2 *X*.....
+3 O.......
+4 O.......
+5 .O.*....
+6 .*......
+7 ........
+
+
+6(b)i   Average evaluation time: 0.7077873349189758
+6(b)ii  Total heuristic evaluations: 5508762
+6(b)iii Evaluations by depth: {7: 4788490, 6: 588561, 5: 116537, 4: 12528, 3: 2358, 2: 233, 1: 55}
+6(b)iv  Average evaluation depth: 5.088256581000058
+6(b)v   Average recursion depth: 3.630303162931839
+6(b)vi  Total moves: 1

@@ -578,7 +578,31 @@ class Game:
 
             except TimeoutError:
                 print("The current AI player ran out of time!")
-                print(self.switch_player() + " wins by default!")
+                winner = self.switch_player()
+                print(winner + " wins by default!")
+                if winner == 'O':
+                    game_metrics["o_wins"] = 1
+                    game_metrics["x_wins"] = 0
+                    if player_o_heuristic.__name__ == self.h1_num_own_tiles.__name__:
+                        game_metrics['h1_wins'] = 1
+                        game_metrics['h2_wins'] = 0
+                    else:
+                        game_metrics['h1_wins'] = 0
+                        game_metrics['h2_wins'] = 1
+                elif winner == 'X':
+                    game_metrics["o_wins"] = 0
+                    game_metrics["x_wins"] = 1
+                    if player_x_heuristic.__name__ == self.h1_num_own_tiles.__name__:
+                        game_metrics['h1_wins'] = 1
+                        game_metrics['h2_wins'] = 0
+                    else:
+                        game_metrics['h1_wins'] = 0
+                        game_metrics['h2_wins'] = 1
+                else:
+                    game_metrics["o_wins"] = 0
+                    game_metrics["x_wins"] = 0
+                    game_metrics['h1_wins'] = 0
+                    game_metrics['h2_wins'] = 0
                 break
 
             moves_counter += 1
@@ -719,7 +743,10 @@ def main(choose_options=False, num_rounds=10, game_size=4, blocks=1, win_length=
                 for key, value in game_metrics_list[metrics_index].items():
                     if type(value) is dict:
                         for inner_key, inner_value in value.items():
-                            average_metrics[key][inner_key] += inner_value
+                            try:
+                                average_metrics[key][inner_key] += inner_value
+                            except KeyError:
+                                average_metrics[key][inner_key] = inner_value
                     else:
                         average_metrics[key] += value
 
