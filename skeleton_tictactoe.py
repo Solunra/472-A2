@@ -19,6 +19,7 @@ class Game:
         self.game_blocks = blocks
         self.win_length = win_length
         self.logger = open(f'logs\\gameTrace-{game_size}{blocks}{win_length}{max_execution_time}.txt', 'w')
+        self.block_positions = block_positions
         self.initialize_game()
         self.recommend = recommend
         self.alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
@@ -29,7 +30,6 @@ class Game:
         self.depth_dictionary_memory = []
         self.evaluation_time = []
         self.ard_memory = []
-        self.block_positions = block_positions
 
     def initialize_game(self, is_first_init=True):
         game = []
@@ -697,20 +697,21 @@ def main(choose_options=False, num_rounds=10, game_size=4, blocks=1, win_length=
             round_file.write(
                 f'Player parameters: player_x_max_depth: {player_x_max_depth} player_o_max_depth: {player_o_max_depth} algo: {algostr} player_o_heuristic: {player_o_heuristic} player_x_heuristic: {player_x_heuristic}\n')
             round_file.write(f'Number of rounds: {num_rounds}\n')
-            for round in range(num_rounds):
-                bucket = player_o_heuristic
-                player_o_heuristic = player_x_heuristic
-                player_x_heuristic = bucket
-                try:
-                    g = Game(recommend=True, blocks=blocks, block_positions=block_positions, game_size=game_size,
-                             win_length=win_length,
-                             max_execution_time=max_execution_time)
+            try:
+                g = Game(recommend=True, blocks=blocks, block_positions=block_positions, game_size=game_size,
+                         win_length=win_length,
+                         max_execution_time=max_execution_time)
+                for round in range(num_rounds):
+                    bucket = player_o_heuristic
+                    player_o_heuristic = player_x_heuristic
+                    player_x_heuristic = bucket
+
                     game_metrics_list.append(
                         g.play(algo=algo, player_x=Game.AI, player_o=Game.AI, player_o_heuristic=player_o_heuristic,
-                               player_x_heuristic=player_o_heuristic, player_o_max_depth=player_o_max_depth,
-                               player_x_max_depth=player_x_max_depth))
-                finally:
-                    g.logger.close()
+                                player_x_heuristic=player_o_heuristic, player_o_max_depth=player_o_max_depth,
+                                player_x_max_depth=player_x_max_depth))
+            finally:
+                g.logger.close()
 
             average_metrics = game_metrics_list[0]
             # averaging the entries in the dicts
